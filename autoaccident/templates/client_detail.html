@@ -1,0 +1,21 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Name: {{ client.first_name }}</h1>
+
+  <p><strong>Phone Number:</strong> {{ client.phone_number }}</p>
+  <p><strong>Type of Client:</strong> {{ client.client_type }}</p>
+  <p><strong>Date of Birth:</strong> {{ client.date_of_birth }}</p>
+  <p><strong>Date of Accident</strong>  <a href="">{{ client.date_of_accident }}</a></p>
+
+  <div style="margin-left:20px;margin-top:20px">
+    <h4>All accidents of the client</h4>
+
+    {% for case in client.clientinstance_set.all %}
+    <hr>
+    <p class="{% if client.status == 'closed' %}text-success{% elif client.status == 'signinpending' %}text-danger{% else %}text-warning{% endif %}">{{ client.get_status_display }}</p>
+    {% if client.status != 'closed' %}<p><strong>In process, to be settled by: </strong> {{client.Statute_of_limitation}}</p>{% endif %}
+    <p class="text-muted"><strong>Id:</strong> {{client.id}}</p>
+    {% endfor %}
+  </div>
+{% endblock %}

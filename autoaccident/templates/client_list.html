@@ -1,0 +1,37 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Client List</h1>
+
+    <div class="container">
+            <table id="client_list" class="table table-hover">
+                <thead>
+                    <tr>
+                          <th class="col-md-1">Client</th>
+                          <th class="col-md-1">Category</th>
+                          <th class="col-md-1">Date of Accident</th>
+                          <th class="col-md-1">Number of passengers</th>
+
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {% if client_list %}
+                      <ul>
+
+                        {% for client in client_list %}
+                        <tr>
+                          <td>{{ client.first_name }} {{ client.last_name }}</td>
+                          <td>{{ client.client_type }}</td>
+                          <td>{{ client.date_of_accident }}</td>
+                          <td>{{ client.number_of_passengers }}</td>
+                        </tr>
+                        {% endfor %}
+
+                      </ul>
+                      {% else %}
+                        <p>There are no clients in the system.</p>
+                      {% endif %}
+                  </tbody>
+            </table>
+      </div>
+{% endblock %}

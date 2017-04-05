@@ -1,0 +1,259 @@
+{% extends "base_generic.html" %}
+{% load staticfiles %}\
+{% load widget_tweaks %}
+
+{% block title %}AddNewClient{% endblock %}
+{% block content %}
+    <div class="page-header">
+          <h1>Add New Client </h1>
+    </div>
+    <div class="container">
+        <div class="header">
+        <ul style="padding-right:60px" class="nav nav-pills pull-right">
+
+          <li {% if bootstrap == 3 %} class="active"{% endif %}><a href="/model_form_v3/"></a></li>
+        </ul>
+
+    </div>
+    <div role="tabpanel">
+      <ul class="nav nav-tabs">
+
+        <li role="presentation" class="active"><a href="#tabs-1" aria-controls="tabs-1" role="tab" data-toggle="tab">New Client</a></li>
+        <li role="presentation"><a href="#tabs-2" aria-controls="tabs-2" role="tab" data-toggle="tab">Client Address</a></li>
+        <li role="presentation"><a href="#tabs-3" aria-controls="tabs-3" role="tab" data-toggle="tab">Client Vehicle</a></li>
+      </ul>
+      <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="tabs-1">
+        <form action="{{ action }}" method="POST">
+          <table>
+          {% csrf_token %}
+          {{ formA.non_field_errors }}
+          <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.first_name.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.first_name.id_for_label }}">First Name</label></p>
+                    <div class="col-sm-9">{{ formA.first_name|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.middle_name.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.middle_name.id_for_label }}">Middle Name</label></p>
+                    <div class="col-sm-9">{{ formA.middle_name|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.last_name.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.last_name.id_for_label }}">Last Name</label></p>
+                    <div class="col-sm-9">{{ formA.last_name|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.phone_number.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.phone_number.id_for_label }}">Phone Number</label></p>
+                    <div class="col-sm-9">{{ formA.phone_number|add_class:"form-control"}}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.date_of_birth.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.date_of_birth.id_for_label }}">Date of Birth</label></p>
+                    <div class="col-sm-9">{{ formA.date_of_birth|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.gender.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.gender.id_for_label }}">Gender</label></p>
+                    <div class="col-sm-9">{{ formA.gender|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.driver_license.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.driver_license.id_for_label }}">Driver License Number</label></p>
+                    <div class="col-sm-9">{{ formA.driver_license|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.date_of_accident.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.date_of_accident.id_for_label }}">Date of Accident</label></p>
+                    <div class="col-sm-9">{{ formA.date_of_accident|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+      </table>
+    <a class="btn btn-primary btnNext" >Next</a>
+  </form>
+</div>
+  <div role="tabpanel" class="tab-pane" id="tabs-2">
+    <form action="{{ action }}" method="POST">
+      <table>
+      {% csrf_token %}
+      {{ formB.non_field_errors }}
+      <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formB.address_1.errors }}
+                    <p><label class="col-sm-3" for="{{ formB.address_1.id_for_label }}">Address</label></p>
+                    <div class="col-sm-9">{{ formB.address_1|add_class:"form-control"}}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formB.address_2.errors }}
+                    <p><label class="col-sm-3" for="{{ formB.address_2.id_for_label }}">Address contd..</label></p>
+                    <div class="col-sm-9">{{ formB.address_2|add_class:"form-control"}}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formB.city.errors }}
+                    <p><label class="col-sm-3" for="{{ formB.city.id_for_label }}">City</label></p>
+                    <div class="col-sm-9">{{ formB.city|add_class:"form-control"}}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formB.state.errors }}
+                    <p><label class="col-sm-3" for="{{ formB.state.id_for_label }}">State</label></p>
+                    <div class="col-sm-9">{{ formB.state|add_class:"form-control"}}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formB.zip_code.errors }}
+                    <p><label class="col-sm-3" for="{{ formB.zip_code.id_for_label }}">Zip Code</label></p>
+                    <div class="col-sm-9">{{ formB.zip_code|add_class:"form-control"}}</div>
+                </div>
+            </td>
+        </tr>
+      </table>
+      <a class="btn btn-primary btnPrevious" >Previous</a>
+      <a class="btn btn-primary btnNext" >Next</a>
+    </form>
+  </div>
+
+      <div role="tabpanel" class="tab-pane active" id="tabs-3">
+        <form action="{{ action }}" method="POST">
+          <table>
+          {% csrf_token %}
+          {{ formC.non_field_errors }}
+          <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formC.vehicle_year.errors }}
+                    <p><label class="col-sm-3" for="{{ formC.vehicle_year.id_for_label }}">Model Year</label></p>
+                    <div class="col-sm-9">{{ formC.vehicle_year|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+          <td style="padding-bottom:10px;">
+              <div class="fieldWrapper">
+                  {{ formC.vehicle_make.errors }}
+                  <p><label class="col-sm-3" for="{{ formC.vehicle_make.id_for_label }}">Vehicle Manufacturer</label></p>
+                  <div class="col-sm-9">{{ formC.vehicle_make|add_class:"form-control" }}</div>
+              </div>
+          </td>
+      </tr>
+      <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formC.vehicle_model.errors }}
+                <p><label class="col-sm-3" for="{{ formC.vehicle_model.id_for_label }}">Vehicle Model</label></p>
+                <div class="col-sm-9">{{ formC.vehicle_model|add_class:"form-control" }}</div>
+            </div>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formC.vehicle_registration.errors }}
+                <p><label class="col-sm-3" for="{{ formC.vehicle_registration.id_for_label }}">Vehicle Registration Number</label></p>
+                <div class="col-sm-9">{{ formC.vehicle_registration|add_class:"form-control" }}</div>
+            </div>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formC.vehicle_color.errors }}
+                <p><label class="col-sm-3" for="{{ formC.vehicle_color.id_for_label }}">Vehicle Color</label></p>
+                <div class="col-sm-9">{{ formC.vehicle_color|add_class:"form-control" }}</div>
+            </div>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formC.damage_location.errors }}
+                <p><label class="col-sm-3" for="{{ formC.damage_location.id_for_label }}">Damage Location</label></p>
+                <div class="col-sm-9">{{ formC.damage_location|add_class:"form-control" }}</div>
+            </div>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formC.damage_description.errors }}
+                <p><label class="col-sm-3" for="{{ formC.damage_description.id_for_label }}">Description of Property Damage</label></p>
+                <div class="col-sm-9">{{ formC.damage_description|add_class:"form-control" }}</div>
+            </div>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formC.carseat.errors }}
+                <p><label class="col-sm-3" for="{{ formC.carseat.id_for_label }}">Carseat in the vehicle?</label></p>
+                <div class="col-sm-9">{{ formC.carseat|add_class:"form-control" }}</div>
+            </div>
+        </td>
+      </tr>
+    </table>
+    <a class="btn btn-primary btnPrevious" >Previous</a>
+    <a class="btn btn-primary btnNext" >Next</a>
+    <button type="submit" class="save btn btn-primary">Save</button>
+  </form>
+</div>
+</div>
+</div>
+</div>
+
+<script type="text/javascript">
+$('.btnNext').click(function(){
+$('.nav-tabs > .active').next('li').find('a').trigger('click');
+});
+
+$('.btnPrevious').click(function(){
+$('.nav-tabs > .active').prev('li').find('a').trigger('click');
+});
+    </script>
+{% endblock %}

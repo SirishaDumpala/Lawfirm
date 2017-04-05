@@ -1,0 +1,241 @@
+{% extends "base_generic.html" %}
+{% load staticfiles %}\
+{% load widget_tweaks %}
+
+{% block title %}OtherPartyInformation{% endblock %}
+{% block content %}
+    <div class="page-header">
+          <h1>Other Party Information </h1>
+    </div>
+    <div class="container">
+        <div class="header">
+        <ul style="padding-right:60px" class="nav nav-pills pull-right">
+
+          <li {% if bootstrap == 3 %} class="active"{% endif %}><a href="/model_form_v3/"></a></li>
+        </ul>
+
+    </div>
+    <div role="tabpanel">
+      <ul class="nav nav-tabs">
+
+        <li role="presentation" class="active"><a href="#tabs-1" aria-controls="tabs-1" role="tab" data-toggle="tab">Other Party Profile</a></li>
+        <li role="presentation"><a href="#tabs-2" aria-controls="tabs-2" role="tab" data-toggle="tab">Other Party Address</a></li>
+        <li role="presentation"><a href="#tabs-3" aria-controls="tabs-3" role="tab" data-toggle="tab">Other Party Vehicle</a></li>
+      </ul>
+      <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="tabs-1">
+        <form action="{{ action }}" method="POST">
+          <table>
+          {% csrf_token %}
+          {{ formA.non_field_errors }}
+          <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.client.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.client.id_for_label }}">Client</label></p>
+                    <div class="col-sm-9">{{ formA.client|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.otherparty_driver_name.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.otherparty_driver_name.id_for_label }}">Driver Name</label></p>
+                    <div class="col-sm-9">{{ formA.otherparty_driver_name|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.otherparty_phonenumber.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.phonenumber.id_for_label }}">Phone Number</label></p>
+                    <div class="col-sm-9">{{ formA.phonenumber|add_class:"form-control"}}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.otherparty_date_of_birth.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.otherparty_date_of_birth.id_for_label }}">Date of Birth</label></p>
+                    <div class="col-sm-9">{{ formA.otherparty_date_of_birth|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.otherparty_gender.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.otherparty_gender.id_for_label }}">Gender</label></p>
+                    <div class="col-sm-9">{{ formA.otherparty_gender|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.otherparty_driver_license.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.otherparty_driver_license.id_for_label }}">Driver License Number</label></p>
+                    <div class="col-sm-9">{{ formA.otherparty_driver_license|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.otherparty_number_of_passengers.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.otherparty_number_of_passengers.id_for_label }}">Number of Passengers</label></p>
+                    <div class="col-sm-9">{{ formA.otherparty_number_of_passengers|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+      </table>
+    <a class="btn btn-primary btnNext" >Next</a>
+  </form>
+</div>
+  <div role="tabpanel" class="tab-pane" id="tabs-2">
+    <form action="{{ action }}" method="POST">
+      <table>
+      {% csrf_token %}
+      {{ formB.non_field_errors }}
+      <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formB.otherparty_address_1.errors }}
+                    <p><label class="col-sm-3" for="{{ formB.otherparty_address_1.id_for_label }}">Address</label></p>
+                    <div class="col-sm-9">{{ formB.otherparty_address_1|add_class:"form-control"}}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formB.otherparty_address_2.errors }}
+                    <p><label class="col-sm-3" for="{{ formB.otherparty_address_2.id_for_label }}">Address contd..</label></p>
+                    <div class="col-sm-9">{{ formB.otherparty_address_2|add_class:"form-control"}}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formB.otherparty_city.errors }}
+                    <p><label class="col-sm-3" for="{{ formB.otherparty_city.id_for_label }}">City</label></p>
+                    <div class="col-sm-9">{{ formB.otherparty_city|add_class:"form-control"}}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formB.otherparty_state.errors }}
+                    <p><label class="col-sm-3" for="{{ formB.state.id_for_label }}">State</label></p>
+                    <div class="col-sm-9">{{ formB.otherparty_state|add_class:"form-control"}}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formB.otherparty_zip_code.errors }}
+                    <p><label class="col-sm-3" for="{{ formB.otherparty_zip_code.id_for_label }}">Zip Code</label></p>
+                    <div class="col-sm-9">{{ formB.otherparty_zip_code|add_class:"form-control"}}</div>
+                </div>
+            </td>
+        </tr>
+      </table>
+      <a class="btn btn-primary btnPrevious" >Previous</a>
+      <a class="btn btn-primary btnNext" >Next</a>
+    </form>
+  </div>
+
+      <div role="tabpanel" class="tab-pane active" id="tabs-3">
+        <form action="{{ action }}" method="POST">
+          <table>
+          {% csrf_token %}
+          {{ formC.non_field_errors }}
+          <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formC.otherparty_vehicle_year.errors }}
+                    <p><label class="col-sm-3" for="{{ formC.otherparty_vehicle_year.id_for_label }}">Model Year</label></p>
+                    <div class="col-sm-9">{{ formC.otherparty_vehicle_year|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+          <td style="padding-bottom:10px;">
+              <div class="fieldWrapper">
+                  {{ formC.otherparty_vehicle_make.errors }}
+                  <p><label class="col-sm-3" for="{{ formC.otherparty_vehicle_make.id_for_label }}">Vehicle Manufacturer</label></p>
+                  <div class="col-sm-9">{{ formC.otherparty_vehicle_make|add_class:"form-control" }}</div>
+              </div>
+          </td>
+      </tr>
+      <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formC.otherparty_vehicle_model.errors }}
+                <p><label class="col-sm-3" for="{{ formC.otherparty_vehicle_model.id_for_label }}">Vehicle Model</label></p>
+                <div class="col-sm-9">{{ formC.otherparty_vehicle_model|add_class:"form-control" }}</div>
+            </div>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formC.otherparty_vehicle_registration.errors }}
+                <p><label class="col-sm-3" for="{{ formC.otherparty_vehicle_registration.id_for_label }}">Vehicle Registration Number</label></p>
+                <div class="col-sm-9">{{ formC.otherparty_vehicle_registration|add_class:"form-control" }}</div>
+            </div>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formC.otherparty_vehicle_color.errors }}
+                <p><label class="col-sm-3" for="{{ formC.otherparty_vehicle_color.id_for_label }}">Vehicle Color</label></p>
+                <div class="col-sm-9">{{ formC.otherparty_vehicle_color|add_class:"form-control" }}</div>
+            </div>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formC.otherparty_damage_location.errors }}
+                <p><label class="col-sm-3" for="{{ formC.otherparty_damage_location.id_for_label }}">Damage Location</label></p>
+                <div class="col-sm-9">{{ formC.otherparty_damage_location|add_class:"form-control" }}</div>
+            </div>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formC.otherparty_damage_description.errors }}
+                <p><label class="col-sm-3" for="{{ formC.otherparty_damage_description.id_for_label }}">Description of Property Damage</label></p>
+                <div class="col-sm-9">{{ formC.otherparty_damage_description|add_class:"form-control" }}</div>
+            </div>
+        </td>
+      </tr>
+      </table>
+      <a class="btn btn-primary btnPrevious" >Previous</a>
+      <a class="btn btn-primary btnNext" >Next</a>
+      <button type="submit" class="save btn btn-primary">Save</button>
+    </form>
+</div>
+</div>
+</div>
+</div>
+
+<script type="text/javascript">
+$('.btnNext').click(function(){
+$('.nav-tabs > .active').next('li').find('a').trigger('click');
+});
+
+$('.btnPrevious').click(function(){
+$('.nav-tabs > .active').prev('li').find('a').trigger('click');
+});
+    </script>
+{% endblock %}

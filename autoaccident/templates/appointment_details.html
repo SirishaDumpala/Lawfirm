@@ -1,0 +1,121 @@
+{% extends "base_generic.html" %}
+{% load staticfiles %}\
+{% load widget_tweaks %}
+
+{% block title %}Make an Appointment{% endblock %}
+{% block content %}
+    <div class="page-header">
+          <h1>Appointment</h1>
+    </div>
+    <div class="container">
+        <div class="header">
+        <ul style="padding-right:60px" class="nav nav-pills pull-right">
+
+          <li {% if bootstrap == 3 %} class="active"{% endif %}><a href="/model_form_v3/"></a></li>
+        </ul>
+
+    </div>
+    <div role="tabpanel">
+      <ul class="nav nav-tabs">
+
+        <li role="presentation" class="active"><a href="#tabs-1" aria-controls="tabs-1" role="tab" data-toggle="tab">Appointment Details</a></li>
+      </ul>
+      <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="tabs-1">
+        <form action="{{ action }}" method="POST">
+          <table>
+          {% csrf_token %}
+          {{ form.non_field_errors }}
+          <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ form.existing_client.errors }}
+                    <p><label class="col-sm-3" for="{{ form.existing_client.id_for_label }}">Existing Client?</label></p>
+                    <div class="col-sm-9">{{ form.existing_client|add_class:"form-control" }}</div>
+                </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ form.caller_first_name.errors }}
+                    <p><label class="col-sm-3" for="{{ form.caller_first_name.id_for_label }}">First Name</label></p>
+                    <div class="col-sm-9">{{ form.caller_first_name|add_class:"form-control" }}</div>
+                </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ form.caller_last_name.errors }}
+                    <p><label class="col-sm-3" for="{{ form.caller_last_name.id_for_label }}">Last Name</label></p>
+                    <div class="col-sm-9">{{ form.caller_last_name|add_class:"form-control" }}</div>
+                </div>
+            </td>
+          </tr>
+
+          <tr>
+              <td style="padding-bottom:10px;">
+                  <div class="fieldWrapper">
+                      {{ form.type_of_appointment.errors }}
+                      <p><label class="col-sm-3" for="{{ form.time_of_accident.id_for_label }}">Reason for Appointment </label></p>
+                      <div class="col-sm-9">{{ form.type_of_appointment|add_class:"form-control" }}</div>
+                  </div>
+              </td>
+          </tr>
+          <tr>
+              <td style="padding-bottom:10px;">
+                  <div class="fieldWrapper">
+                      {{ form.further_appointment_notes.errors }}
+                      <p><label class="col-sm-3" for="{{ form.further_appointment_notes.id_for_label }}">Appointment Notes </label></p>
+                      <div class="col-sm-9">{{ form.further_appointment_notes|add_class:"form-control" }}</div>
+                  </div>
+              </td>
+          </tr>
+          <tr>
+              <td style="padding-bottom:10px;">
+                  <div class="fieldWrapper">
+                      {{ form.phone_number.errors }}
+                      <p><label class="col-sm-3" for="{{ form.phone_number.id_for_label }}">Phone Number</label></p>
+                      <div class="col-sm-9">{{ form.phone_number|add_class:"form-control" }}</div>
+                  </div>
+              </td>
+          </tr>
+          <tr>
+              <td style="padding-bottom:10px;">
+                  <div class="fieldWrapper">
+                      {{ form.appointment_date.errors }}
+                      <p><label class="col-sm-3" for="{{ form.appointment_date.id_for_label }}">Date</label></p>
+                      <div class="col-sm-9">{{ form.appointment_date|add_class:"form-control" }}</div>
+                  </div>
+              </td>
+          </tr>
+          <tr>
+              <td style="padding-bottom:10px;">
+                  <div class="fieldWrapper">
+                      {{ form.appointment_time.errors }}
+                      <p><label class="col-sm-3" for="{{ form.appointment_time.id_for_label }}">Time </label></p>
+                      <div class="col-sm-9">{{ form.appointment_time|add_class:"form-control" }}</div>
+                  </div>
+              </td>
+          </tr>
+        </table>
+
+        <button type="submit" class="save btn btn-primary">Save</button>
+      </form>
+  </div>
+  </div>
+  </div>
+  </div>
+
+  <script type="text/javascript">
+  $('.btnNext').click(function(){
+  $('.nav-tabs > .active').next('li').find('a').trigger('click');
+  });
+
+  $('.btnPrevious').click(function(){
+  $('.nav-tabs > .active').prev('li').find('a').trigger('click');
+  });
+      </script>
+  {% endblock %}

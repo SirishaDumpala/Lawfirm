@@ -1,0 +1,188 @@
+superuser: sirisha
+password: lawoffice
+
+User:
+
+username: employee1
+password: employpass
+
+username: Employee2
+password: employpass2
+
+
+{% extends "base_generic.html" %}
+
+
+{% block title %}Client List{% endblock %}
+{% block body_block %}
+    <div style="padding-left:100px;" class="page-header">
+          <h1>Client List</h1>
+    </div>
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                      <th class="col-md-1">Client</th>
+                      <th class="col-md-1">Category</th>
+                      <th class="col-md-1">Date of Accident</th>
+                      <th class="col-md-1">Number of passengers</th>
+
+                  </tr>
+              </thead>
+              <tbody>
+                {% for client in client_list %}
+                    <tr>
+                        <td>{{ client.first_name }} {{ client.last_name }}</td>
+                        <td>{{ client.client_type }}</td>
+                        <td>{{ client.date_of_accident }}</td>
+                        <td>{{ client.number_of_passengers }}</td>
+                    </tr>
+                    {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+
+
+
+new client form:
+
+{% extends "base_generic.html" %}
+{% block content %}
+
+
+    <form action="{{ action }}" method="post">
+        {% csrf_token %}
+        <table>
+        {{ form }}
+        </table>
+        <input type="submit" value="Submit" />
+    </form>
+
+{% endblock %}
+
+newclientsignup html:
+
+<form action="{{ action }}" method="post">
+            {% csrf_token %}
+            <table>
+            {{ formA }} {{ formB }}
+            </table>
+            <input type="submit" value="Submit" />
+        </form>
+
+
+base generic.html:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  {% block title %}<title>LawOffice</title>{% endblock %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <!-- Add additional CSS in static file -->
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+
+<body>
+
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-sm-2">
+      {% block sidebar %}
+      <ul class="sidebar-nav">
+          <li><a href="{% url 'index' %}">Home</a></li>
+          <li><a href="{% url 'clients' %}">All clients</a></li>
+          {% if user.is_authenticated %}
+             <li>User: {{ user.get_username }}</li>
+             <li><a href="{% url 'logout' %}?next=/accounts/logout/">Logout</a></li>
+             
+          {% else %}
+              <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
+          {% endif %}
+      </ul>
+     {% endblock %}
+      </div>
+      <div class="col-sm-10 ">
+      {% block content %}{% endblock %}
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
+
+login.html:
+
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+    {% else %}
+    <p>Please login to see this page.</p>
+    {% endif %}
+{% endif %}
+
+<form method="post" action="{% url 'login' %}">
+{% csrf_token %}
+
+<div>
+  <td>{{ form.username.label_tag }}</td>
+  <td>{{ form.username }}</td>
+</div>
+<div>
+  <td>{{ form.password.label_tag }}</td>
+  <td>{{ form.password }}</td>
+</div>
+
+<div>
+  <input type="submit" value="login" />
+  <input type="hidden" name="next" value="" />
+</div>
+</form>
+
+{# Assumes you setup the password_reset view in your URLconf #}
+<p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+
+
+{% endblock %}
+
+
+index.html:
+
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h1>LawOffice Home</h1>
+
+  <p>Welcome to <em>LawOffice</em>, Workflow management system to help the employees organize their work.</p>
+
+<h2>Dynamic content</h2>
+
+  <p>The lawoofice has the following counts:</p>
+  <ul>
+    <li><strong>Clients:</strong> {{ num_clients }}</li>
+    <li><strong>ClientInstance:</strong> {{ num_instances }}</li>
+    <li><strong>Clients with Property damage under process:</strong> {{ num_instances_pd }}</li>
+    <li><strong>Clients with medical report pending:</strong> {{ num_instances_medical }}</li>
+  </ul>
+
+{% endblock %}
+
+
