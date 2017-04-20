@@ -1,8 +1,8 @@
 from django.db import models
-from datetime import date
+from datetime import date, datetime
 from django.utils import timezone
 from datetimewidget.widgets import DateWidget, DateTimeWidget, TimeWidget
-from phonenumber_field.modelfields import PhoneNumberField
+#from phonenumber_field.modelfields import PhoneNumberField
 from django.utils.translation import ugettext as _
 from localflavor.us.models import USStateField
 from localflavor.us.us_states import STATE_CHOICES
@@ -38,10 +38,13 @@ class Client(models.Model):
     date_of_birth = models.DateField(_("Date of Birth"), null = True)
     driver_license = models.CharField(max_length=14, null = True)
     gender = models.CharField(max_length=50, choices=GENDER_CHOICES, null = True)
+    ssnumber = models.CharField(max_length=9, null = True)
+    medicare_coverage = models.BooleanField(default=False, help_text='Are you covered by Medicare?')
+    medicaid_coverage = models.BooleanField(default=False, help_text='Are you covered by Medicaid?')
     date_of_accident = models.DateField(_("Date of Accident"), null=True)
     passengers = models.BooleanField(default=False, help_text='Any passengers in the car?' )
     number_of_passengers = models.IntegerField(null=True, blank=True)
-
+    injuries = models.TextField(max_length=100, null=True, help_text='list the injuries,eg. neck, back etc.')
     #incident = models.OneToOneField(Incident, help_text='Select a type of incident for the client')
     #OneToOneField used becasue a client can involved in only one type of incident at a time
 
@@ -112,7 +115,8 @@ class ClientInstance(models.Model):
                     ('reject-1', 'Reject-1'),
                     ('reject-2', 'Reject-2'),
                     ('reject-3', 'Reject-3'),
-                    ('filed-in-court', 'Filed-in-Court'),
+                    ('pendingfiling', 'Pending Filing in Court'),
+                    ('filed-in-court', 'Filed in Court'),
                     ('closed', 'Closed'),
                     ('other', 'Other'))
 
@@ -132,7 +136,7 @@ class OtherPartyInformation(models.Model):
     otherparty_date_of_birth = models.DateField(_("Date of Birth"), null = True)
     otherparty_gender = models.CharField(max_length=50, choices=GENDER_CHOICES, null = True)
     otherparty_driver_license = models.CharField(max_length=14, null = True)
-    otherparty_number_of_passengers = models.IntegerField(null=True, blank=True)
+    #otherparty_number_of_passengers = models.IntegerField(null=True, blank=True)
     # following is other party's address details.
 
     otherparty_address_1 = models.CharField(_("address"), max_length=128, blank = True)
@@ -148,8 +152,8 @@ class OtherPartyInformation(models.Model):
     otherparty_vehicle_model=models.CharField(max_length=50, null=True)
     otherparty_vehicle_registration=models.CharField(max_length=7, null=True)
     otherparty_vehicle_color=models.CharField(max_length=50, null=True)
-    otherparty_damage_location=models.TextField(max_length=100, help_text='Enter where the damage is on the vehicle', null=True)
-    otherparty_damage_description=models.TextField(max_length=400, help_text='Enter a description of the damage', null=True)
+    #otherparty_damage_location=models.TextField(max_length=100, help_text='Enter where the damage is on the vehicle', null=True)
+    #otherparty_damage_description=models.TextField(max_length=400, help_text='Enter a description of the damage', null=True)
 
 
     def __str__(self):
@@ -171,8 +175,8 @@ class AccidentDetails(models.Model):
                         )
 
     client = models.ForeignKey('Client', null=True)
-    date_of_accident = models.DateField(_("Date of Accident"), null=True)
-    time_of_accident = models.TimeField(_("Time of Accident"), null=True)
+    date_of_accident = models.DateTimeField(blank=True, null=True)
+    time_of_accident = models.TimeField(blank=True, null=True)
     weather_condition = models.CharField(max_length=20, choices=CLIMATE_CHOICES, null=True)
 
     city_of_accident = models.CharField(_("city"), max_length=64, default="Fullerton", null=True, blank=True)
@@ -180,6 +184,17 @@ class AccidentDetails(models.Model):
     police_report = models.BooleanField(default=False, help_text='Did the police make a incident report?')
     police_report_number = models.CharField(max_length=15, null=True, blank=True)
     accident_description = models.TextField(max_length=1000, null=True, help_text='Please enter a brief description of how the accident happened')
+    incident_photos = models.BooleanField(default=False, help_text='Pictures of the incident and/or vehicle?')
+    witness = models.BooleanField(default=False, help_text='Are there any witnesses of the incident?')
+
+    # following are emergency treatment details
+    paramedics = models.BooleanField(default=False, help_text='Paramedics come to the scene of accident?')
+    emergency_treatment = models.BooleanField(default=False, help_text='Were you transported to ER?')
+    er_facility_name = models.CharField(max_length=20, null=True, blank=True, help_text='Name of the ER hospital', default='N/A')
+
+    #following are urgent care treatment details
+    urgentcare_treatment = models.BooleanField(default=False, help_text='Did the clientgo to any urgent care?')
+    urgentcare_facility_name = models.CharField(max_length=20, null=True, blank=True, help_text='Name of the urgentcare hospital', default='N')
 
     def __str__(self):
 
@@ -204,14 +219,17 @@ class InsuranceInformation(models.Model):
                         ('Personal Injury Protection', 'personal injury protection'))
 
     # Attributes for own insursnce information
-    insurnace_company = models.CharField(max_length=20, null=True)
-    Policy_holder_name = models.CharField(max_length=30, null=True)
+    insurance_company = models.CharField(max_length=20, null=True)
+    policy_holder_name = models.CharField(max_length=30, null=True)
     policy_number = models.CharField(max_length=15, null=True)
     type_of_coverage = models.CharField(max_length=20, choices=COVERAGE_CHOICES, null = True)
-    coverage_limit_pd = models.CharField(max_length=8, null=True, help_text='Enter the policy limit for property damage in dollars')
+    coverage_limit_pd = models.CharField(max_length=8, null=True,help_text='Enter the policy limit for property damage in dollars')
     coverage_limit_medical = models.CharField(max_length=8, null=True, help_text='Enter the policy limit for medical in dollars')
-
+    rental_coverage = models.BooleanField(default=False, help_text='Does clients insurance cover rental vehicle?')
+    perday_rental = models.CharField(max_length=7, null=True, blank=True, help_text='Rental coverage per day in dollars')
+    deductible = models.CharField(max_length=7, null=True, blank=True, help_text='collision coverage deductible in dollars')
     # Attributes for other party's insurance information
+
     other_insurnace_company = models.CharField(max_length=20, null=True)
     other_Policy_holder_name = models.CharField(max_length=30, null=True)
     other_policy_number = models.CharField(max_length=15, null=True)
@@ -267,10 +285,11 @@ class Appointment(models.Model):
 class CallLog(models.Model):
     # model to track the phone call made and received regarding the case
     client = models.ForeignKey('Client', null=True)
-
+    date_of_accident = models.DateTimeField(blank=True, null=True)
     caller_name = models.CharField(max_length=100, null=True)
-    caller_number = models.PhoneNumberField()
-    call_date = models.DateTimeField(default=datetime.datetime.now)
+    caller_number = models.CharField(max_length=10, null = True)
+    call_date = models.DateTimeField(
+            blank=True, null=True)
     call_notes = models.TextField(max_length=100, null=True)
 
     def __str__(self):
@@ -282,7 +301,72 @@ class CallLog(models.Model):
         """
         return reverse('call-detail', args=[str(self.id)])
 
-'''
-class InsuranceAdjuster(models.Model):
-    # model represeting the information of the adjuster handling the case
-    '''
+
+class DoctorInfo(models.Model):
+    client = models.ForeignKey('Client', null=True)
+
+    hospital_name = models.CharField(max_length=20, null=True)
+    hospital_number = models.CharField(max_length=10, null = True)
+    lien = models.BooleanField(default=False, help_text='lien signed?')
+
+    def __str__(self):
+        return str(self.hospital_name)
+
+    def get_absolute_url(self):
+        """
+        Returns the url to access a particular client instance.
+        """
+        return reverse('doctor-detail', args=[str(self.id)])
+
+
+class ClaimInfo(models.Model):
+    client = models.ForeignKey('Client', null=True)
+
+    claim_number = models.CharField(max_length=20, null=True)
+    adjuster_name = models.CharField(max_length=20, null = True)
+    adjuster_phonenumber = models.CharField(max_length=10, null = True)
+    adjuster_faxnumber = models.CharField(max_length=10, null=True)
+
+    #following are insurance adjuster address information
+
+    adjuster_address_1 = models.CharField(_("address"), max_length=128, blank = True)
+    adjuster_address_2 = models.CharField(_("address cont'd"), max_length=128, blank=True)
+    adjuster_city = models.CharField(_("city"), max_length=64, default="Fullerton", null=True)
+    adjuster_state = USStateField(choices=STATE_CHOICES, default="CA")
+    adjuster_zip_code = models.CharField(_("zip code"), max_length=5, blank=True)
+
+
+    def __str__(self):
+        return str(self.claim_number)
+
+    def get_absolute_url(self):
+        """
+        Returns the url to access a particular client instance.
+        """
+        return reverse('claim-detail', args=[str(self.id)])
+
+class OtherPartyClaim(models.Model):
+    client = models.ForeignKey('Client', null=True)
+
+    claim_number = models.CharField(max_length=20, null=True)
+    adjuster_name = models.CharField(max_length=20, null = True)
+    adjuster_phonenumber = models.CharField(max_length=10, null = True)
+    adjuster_faxnumber = models.CharField(max_length=10, null=True)
+
+    #following are insurance adjuster address information
+
+    adjuster_address_1 = models.CharField(_("address"), max_length=128, blank = True)
+    adjuster_address_2 = models.CharField(_("address cont'd"), max_length=128, blank=True)
+    adjuster_city = models.CharField(_("city"), max_length=64, default="Fullerton", null=True)
+    adjuster_state = USStateField(choices=STATE_CHOICES, default="CA")
+    adjuster_zip_code = models.CharField(_("zip code"), max_length=5, blank=True)
+
+
+    def __str__(self):
+        return str(self.claim_number)
+
+    def get_absolute_url(self):
+        """
+        Returns the url to access a particular client instance.
+        """
+        return reverse('claim-detail', args=[str(self.id)])

@@ -1,21 +1,179 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>Name: {{ client.first_name }}</h1>
+{% load staticfiles %}
 
-  <p><strong>Phone Number:</strong> {{ client.phone_number }}</p>
-  <p><strong>Type of Client:</strong> {{ client.client_type }}</p>
-  <p><strong>Date of Birth:</strong> {{ client.date_of_birth }}</p>
-  <p><strong>Date of Accident</strong>  <a href="">{{ client.date_of_accident }}</a></p>
+{% if user.is_authenticated %}
 
-  <div style="margin-left:20px;margin-top:20px">
-    <h4>All accidents of the client</h4>
-
-    {% for case in client.clientinstance_set.all %}
-    <hr>
-    <p class="{% if client.status == 'closed' %}text-success{% elif client.status == 'signinpending' %}text-danger{% else %}text-warning{% endif %}">{{ client.get_status_display }}</p>
-    {% if client.status != 'closed' %}<p><strong>In process, to be settled by: </strong> {{client.Statute_of_limitation}}</p>{% endif %}
-    <p class="text-muted"><strong>Id:</strong> {{client.id}}</p>
-    {% endfor %}
+  <div class="page-header">
+        <h1>client Profile</h1>
   </div>
+  <div class="container">
+    <div class="header">
+    <ul style="padding-right:60px" class="nav nav-pills pull-right">
+
+      <li {% if bootstrap == 3 %} class="active"{% endif %}><a href="/model_form_v3/"></a></li>
+    </ul>
+
+  </div>
+  <div role="tabpanel">
+  <ul class="nav nav-tabs">
+    <li role="presentation"><a href="#tabs-1" aria-controls="tabs-1" role="tab" data-toggle="tab">Personal Information</a></li>
+    <li role="presentation"><a href="#tabs-2" aria-controls="tabs-2" role="tab" data-toggle="tab">Vehicle Information</a></li>
+    <li role="presentation"><a href="#tabs-3" aria-controls="tabs-3" role="tab" data-toggle="tab">Treatment Information</a></li>
+
+  </ul>
+
+          <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="tabs-1">
+            <br/>
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <tbody>
+              <tr>
+                  <th scope="row" class="col-md-2">Name</th>
+                  <td>{{profile.first_name}} {{profile.last_name}}</td>
+              </tr>
+              <tr>
+                  <th scope="row" class="col-md-2">Date of Birth</th>
+                  <td>{{profile.date_of_birth}}</td>
+              </tr>
+              <tr>
+                  <th scope="row" class="col-md-2">Gender</th>
+                  <td>{{profile.gender}}</td>
+              </tr>
+              <tr>
+                  <th scope="row" class="col-md-2">Phone Number</th>
+                  <td>{{profile.phone_number}}</td>
+              </tr>
+              <tr>
+                  <th scope="row" class="col-md-2">Driver License</th>
+                  <td>{{profile.driver_license}}</td>
+              </tr>
+              <tr>
+                <th scope="row" class="col-md-2">Address</th>
+                <td>{{address.address_1}} {{address.address_2}} , {{address.city}}, {{address.state}}, {{address.zip_code}}</td>
+            </tr>
+              <tr>
+                  <th scope="row" class="col-md-2">SSN</th>
+                  <td>{{profile.ssnumber}}</td>
+              </tr>
+              <tr>
+                  <th scope="row" class="col-md-2">Medicare Coverage</th>
+                  <td>{{profile.medicare_coverage}}</td>
+              </tr>
+              <tr>
+                  <th scope="row" class="col-md-2">Medicaid Coverage</th>
+                  <td>{{profile.medicaid_coverage}}</td>
+              </tr>
+              <tr>
+                  <th scope="row" class="col-md-2">Date of Accident</th>
+                  <td>{{profile.date_of_accident}}</td>
+              </tr>
+
+            </tbody>
+          </table>
+          </div><br/><br/>
+            <a class="btn btn-primary btnNext" >Next</a>
+
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="tabs-2">
+          <br/>
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                    <th scope="row" class="col-md-2">Year</th>
+                    <td>{{vehicle.vehicle_year}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="col-md-2">Make</th>
+                    <td>{{vehicle.vehicle_make}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="col-md-2">Model</th>
+                    <td>{{vehicle.vehicle_model}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="col-md-2">Registration Number</th>
+                    <td>{{vehicle.vehicle_registration}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="col-md-2">Vehicle Color</th>
+                    <td>{{vehicle.vehicle_color}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="col-md-2">Carseat</th>
+                    <td>{{vehicle.carseat}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="col-md-2">Damage Location</th>
+                    <td>{{vehicle.damage_location}}</td>
+                </tr>
+              </tbody>
+          </table>
+        </div>
+        <br/><br/><br/>
+
+
+          <div class="btn-group" role="group" aria-label="...">
+          <a class="btn btn-primary btnPrevious" >Previous</a>
+          <a class="btn btn-primary btnNext" >Next</a>
+
+        </div>
+        </div>
+
+          <div role="tabpanel" class="tab-pane" id="tabs-3">
+            <br/>
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <tbody>
+                  <tr>
+                      <th scope="row" class="col-md-2">ER Facility Name</th>
+                      <td>{{accident_details.er_facility_name}}</td>
+                  </tr>
+                  <tr>
+                      <th scope="row" class="col-md-2">UrgentCare Facility Name</th>
+                      <td>{{accident_details.urgentcare_facility_name}}</td>
+                  </tr>
+                <tr>
+                    <th scope="row" class="col-md-2">Hospital Name</th>
+                    <td>{{treatment.hospital_name}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="col-md-2">Hospital Number</th>
+                    <td>{{treatment.hospital_number}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="col-md-2">Lien</th>
+                    <td>{{treatment.lien}}</td>
+                </tr>
+
+                </tbody>
+            </table>
+          </div>
+          <br/><br/><br/>
+          <a class="btn btn-primary btnPrevious" >Previous</a>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+<script type="text/javascript">
+$('.btnNext').click(function(){
+$('.nav-tabs > .active').next('li').find('a').trigger('click');
+});
+
+$('.btnPrevious').click(function(){
+$('.nav-tabs > .active').prev('li').find('a').trigger('click');
+});
+</script>
+
+{% endif %}
+
+
 {% endblock %}

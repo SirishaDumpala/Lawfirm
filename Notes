@@ -9,6 +9,13 @@ password: employpass
 username: Employee2
 password: employpass2
 
+defects: 
+
+Reverse for 'testgraph' with arguments '()' and keyword arguments '{}' not found. 
+
+
+
+
 
 {% extends "base_generic.html" %}
 
@@ -73,7 +80,7 @@ newclientsignup html:
         </form>
 
 
-base generic.html:
+old base generic.html:
 
 <!DOCTYPE html>
 <html lang="en">
@@ -104,7 +111,7 @@ base generic.html:
           {% if user.is_authenticated %}
              <li>User: {{ user.get_username }}</li>
              <li><a href="{% url 'logout' %}?next=/accounts/logout/">Logout</a></li>
-             
+
           {% else %}
               <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
           {% endif %}
@@ -185,4 +192,533 @@ index.html:
 
 {% endblock %}
 
+
+
+new base generic.html:
+
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- ----- CSS ------------------------------------------ -->
+        <link href="{% static 'css/dashboard.css' %}" rel="stylesheet">
+        <link rel="icon" href="{% static 'media/ocv_icon.ico' %}">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
+        <link href="{% static 'css/fullcalendar.css' %}" rel="stylesheet">
+        <link href="http://arshaw.com/js/fullcalendar-1.5.3/fullcalendar/fullcalendar.print.css" rel="stylesheet" />
+
+        <link href="http://netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.min.css" rel="stylesheet">
+        <link href="http://cdnjs.cloudflare.com/ajax/libs/x-editable/1.4.4/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet">
+        <link href="{% static 'css/bootstrap-filterable.css' %}" rel="stylesheet" type="text/css">
+        <link href="{% static 'css/datetimepicker.css' %}" rel="stylesheet">
+
+        <link href="{% static 'css/textfield.css' %}" rel="stylesheet">
+
+    <!--
+
+        <link href="{% static 'css/style.css' %}" rel="stylesheet"> -->
+
+    <!-- --------- JavaScript ------------------------------- -->
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script class="cssdesk" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js" type="text/javascript"></script>
+
+        <script class="cssdesk" src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.0/js/bootstrap.min.js" type="text/javascript"></script>
+        <script class="cssdesk" src="//arshaw.com/js/fullcalendar-1.5.3/fullcalendar/fullcalendar.min.js" type="text/javascript"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/x-editable/1.4.4/bootstrap-editable/js/bootstrap-editable.min.js"></script>
+        <script src="{% static 'js/jquery.filterable.js' %}"></script>
+
+        <script type="text/javascript">var switchTo5x=true;</script>
+        <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+        <script type="text/javascript">stLight.options({publisher: "48952996-13d3-49f3-9854-e6438041a4b3", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+
+        {% if form %}
+            {{ form.media }}
+        {% endif %}
+
+        </head>
+
+
+<body>
+
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-sm-2">
+      {% block sidebar %}
+      <ul class="sidebar-nav">
+          <li><a href="{% url 'index' %}">Home</a></li>
+          <li><a href="{% url 'clients' %}">All clients</a></li>
+          {% if user.is_authenticated %}
+             <li>User: {{ user.get_username }}</li>
+             <li><a href="{% url 'logout' %}?next=/accounts/logout/">Logout</a></li>
+
+          {% else %}
+              <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
+          {% endif %}
+      </ul>
+     {% endblock %}
+      </div>
+      <div class="col-sm-10 ">
+      {% block content %}{% endblock %}
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
+
+
+
+forms.py:
+NewClientForm:
+
+class NewClientForm(ModelForm):
+
+    class Meta:
+        model = Client
+        widgets = {'date_of_accident': DateWidget(attrs={'id':"yourdatetimeid"}, usel10n = True, bootstrap_version=3),
+                    'medicare_coverage': forms.RadioSelect(renderer=HorizontalRadioRenderer, choices=((1, "Yes"),(0, "No"))),
+                    'medicaid_coverage': forms.RadioSelect(renderer=HorizontalRadioRenderer, choices=((1, "Yes"),(0, "No"))),
+                    'passengers': forms.RadioSelect(renderer=HorizontalRadioRenderer, choices=((1, "Yes"),(0, "No")))
+                    }
+        fields = ['first_name', 'middle_name', 'last_name', 'phone_number', 'date_of_birth','gender', 'driver_license','ssnumber', 'medicare_coverage', 'medicaid_coverage', 'passengers', 'number_of_passengers','date_of_accident', 'injuries',]
+        #labels = {'statute_date': _('filing_date'),}
+   
+     #help_texts = {'statute_date': _('Enter the date 2 years from the date of accident.'),}
+
+
+
+
+
+
+new_client_signup.html:
+
+{% extends "base_generic.html" %}
+{% load staticfiles %}\
+{% load widget_tweaks %}
+
+{% block title %}AddNewClient{% endblock %}
+{% block content %}
+    <div class="page-header">
+          <h1>Add New Client </h1>
+    </div>
+    <div class="container">
+        <div class="header">
+        <ul style="padding-right:60px" class="nav nav-pills pull-right">
+
+          <li {% if bootstrap == 3 %} class="active"{% endif %}><a href="/model_form_v3/"></a></li>
+        </ul>
+
+    </div>
+    <div role="tabpanel">
+      <ul class="nav nav-tabs">
+
+        <li role="presentation" class="active"><a href="#tabs-1" aria-controls="tabs-1" role="tab" data-toggle="tab">New Client</a></li>
+        <li role="presentation"><a href="#tabs-2" aria-controls="tabs-2" role="tab" data-toggle="tab">Client Address</a></li>
+        <li role="presentation"><a href="#tabs-3" aria-controls="tabs-3" role="tab" data-toggle="tab">Client Vehicle</a></li>
+        <li role="presentation"><a href="#tabs-4" aria-controls="tabs-4" role="tab" data-toggle="tab">Doctor Details</a></li>
+      </ul>
+      <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="tabs-1">
+        <form action="{{ action }}" method="POST">
+          <table>
+          {% csrf_token %}
+          {{ formA.non_field_errors }}
+          <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.first_name.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.first_name.id_for_label }}">First Name</label></p>
+                    <div class="col-sm-9">{{ formA.first_name|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.middle_name.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.middle_name.id_for_label }}">Middle Name</label></p>
+                    <div class="col-sm-9">{{ formA.middle_name|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.last_name.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.last_name.id_for_label }}">Last Name</label></p>
+                    <div class="col-sm-9">{{ formA.last_name|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.phone_number.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.phone_number.id_for_label }}">Phone Number</label></p>
+                    <div class="col-sm-9">{{ formA.phone_number|add_class:"form-control"}}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.date_of_birth.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.date_of_birth.id_for_label }}">Date of Birth</label></p>
+                    <div class="col-sm-9">{{ formA.date_of_birth|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.gender.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.gender.id_for_label }}">Gender</label></p>
+                    <div class="col-sm-9">{{ formA.gender|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.ssnumber.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.ssnumber.id_for_label }}">Social Security Number</label></p>
+                    <div class="col-sm-9">{{ formA.ssnumber|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.medicare_coverage.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.medicare_coverage.id_for_label }}">Covered under Medicare?</label></p>
+                    <div class="col-sm-9">{{ formA.medicare_coverage|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.medicaid_coverage.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.medicaid_coverage.id_for_label }}">Covered under Medicaid?</label></p>
+                    <div class="col-sm-9">{{ formA.medicaid_coverage|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+
+
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.driver_license.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.driver_license.id_for_label }}">Driver License Number</label></p>
+                    <div class="col-sm-9">{{ formA.driver_license|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.date_of_accident.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.date_of_accident.id_for_label }}">Date of Accident</label></p>
+                    <div class="col-sm-9">{{ formA.date_of_accident|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.passengers.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.passengers.id_for_label }}">Any passengers in the vehicle?</label></p>
+                    <div class="col-sm-9">{{ formA.passengers|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.number_of_passengers.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.number_of_passengers.id_for_label }}">Number of Passengers in the Vehicle</label></p>
+                    <div class="col-sm-9">{{ formA.number_of_passengers|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formA.injuries.errors }}
+                    <p><label class="col-sm-3" for="{{ formA.injuries.id_for_label }}">List the Injuries Suffered in the Accident</label></p>
+                    <div class="col-sm-9">{{ formA.injuries|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+      </table>
+      <a class="btn btn-primary btnNext" >Next</a>
+
+  </form>
+</div>
+  <div role="tabpanel" class="tab-pane" id="tabs-2">
+    <form action="{{ action }}" method="POST">
+      <table>
+      {% csrf_token %}
+      {{ formB.non_field_errors }}
+            <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formB.address_1.errors }}
+                    <p><label class="col-sm-3" for="{{ formB.address_1.id_for_label }}">Address</label></p>
+                    <div class="col-sm-9">{{ formB.address_1|add_class:"form-control"}}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formB.address_2.errors }}
+                    <p><label class="col-sm-3" for="{{ formB.address_2.id_for_label }}">Address contd..</label></p>
+                    <div class="col-sm-9">{{ formB.address_2|add_class:"form-control"}}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formB.city.errors }}
+                    <p><label class="col-sm-3" for="{{ formB.city.id_for_label }}">City</label></p>
+                    <div class="col-sm-9">{{ formB.city|add_class:"form-control"}}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formB.state.errors }}
+                    <p><label class="col-sm-3" for="{{ formB.state.id_for_label }}">State</label></p>
+                    <div class="col-sm-9">{{ formB.state|add_class:"form-control"}}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formB.zip_code.errors }}
+                    <p><label class="col-sm-3" for="{{ formB.zip_code.id_for_label }}">Zip Code</label></p>
+                    <div class="col-sm-9">{{ formB.zip_code|add_class:"form-control"}}</div>
+                </div>
+            </td>
+        </tr>
+      </table>
+      <a class="btn btn-primary btnPrevious" >Previous</a>
+      <a class="btn btn-primary btnNext" >Next</a>
+
+    </form>
+  </div>
+    <div role="tabpanel" class="tab-pane" id="tabs-3">
+      <form action="{{ action }}" method="POST">
+        <table>
+        {% csrf_token %}
+        {{ formC.non_field_errors }}
+
+          <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formC.vehicle_year.errors }}
+                    <p><label class="col-sm-3" for="{{ formC.vehicle_year.id_for_label }}">Model Year</label></p>
+                    <div class="col-sm-9">{{ formC.vehicle_year|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+          <td style="padding-bottom:10px;">
+              <div class="fieldWrapper">
+                  {{ formC.vehicle_make.errors }}
+                  <p><label class="col-sm-3" for="{{ formC.vehicle_make.id_for_label }}">Vehicle Manufacturer</label></p>
+                  <div class="col-sm-9">{{ formC.vehicle_make|add_class:"form-control" }}</div>
+              </div>
+          </td>
+      </tr>
+      <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formC.vehicle_model.errors }}
+                <p><label class="col-sm-3" for="{{ formC.vehicle_model.id_for_label }}">Vehicle Model</label></p>
+                <div class="col-sm-9">{{ formC.vehicle_model|add_class:"form-control" }}</div>
+            </div>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formC.vehicle_registration.errors }}
+                <p><label class="col-sm-3" for="{{ formC.vehicle_registration.id_for_label }}">Vehicle Registration Number</label></p>
+                <div class="col-sm-9">{{ formC.vehicle_registration|add_class:"form-control" }}</div>
+            </div>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formC.vehicle_color.errors }}
+                <p><label class="col-sm-3" for="{{ formC.vehicle_color.id_for_label }}">Vehicle Color</label></p>
+                <div class="col-sm-9">{{ formC.vehicle_color|add_class:"form-control" }}</div>
+            </div>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formC.damage_description.errors }}
+                <p><label class="col-sm-3" for="{{ formC.damage_description.id_for_label }}">Description of Property Damage</label></p>
+                <div class="col-sm-9">{{ formC.damage_description|add_class:"form-control" }}</div>
+            </div>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formC.carseat.errors }}
+                <p><label class="col-sm-3" for="{{ formC.carseat.id_for_label }}">Carseat in the vehicle?</label></p>
+                <div class="col-sm-9">{{ formC.carseat|add_class:"form-control" }}</div>
+            </div>
+        </td>
+      </tr>
+    </table>
+    <a class="btn btn-primary btnPrevious" >Previous</a>
+    <a class="btn btn-primary btnNext" >Next</a>
+
+  </form>
+  </div>
+  <div role="tabpanel" class="tab-pane" id="tabs-4">
+    <form action="{{ action }}" method="POST">
+      <table>
+      {% csrf_token %}
+
+          {{ formD.non_field_errors }}
+          
+          <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ formD.hospital_name.errors }}
+                    <p><label class="col-sm-3" for="{{ formD.hospital_name.id_for_label }}">Name of the Treatment Facility</label></p>
+                    <div class="col-sm-9">{{ formD.hospital_name|add_class:"form-control" }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+          <td style="padding-bottom:10px;">
+              <div class="fieldWrapper">
+                  {{ formD.hospital_number.errors }}
+                  <p><label class="col-sm-3" for="{{ formD.hospital_number.id_for_label }}">Contact Number</label></p>
+                  <div class="col-sm-9">{{ formD.hospital_number|add_class:"form-control" }}</div>
+              </div>
+          </td>
+      </tr>
+      <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formD.lien.errors }}
+                <p><label class="col-sm-3" for="{{ formD.lien.id_for_label }}">Attorney signed the lien?</label></p>
+                <div class="col-sm-9">{{ formD.lien|add_class:"form-control" }}</div>
+            </div>
+        </td>
+    </tr>
+
+    </table>
+    <a class="btn btn-primary btnPrevious" >Previous</a>
+    <button type="submit" class="save btn btn-primary">Save</button>
+  </form>
+
+</div>
+
+</div>
+</div>
+</div>
+
+<script type="text/javascript">
+$('.btnNext').click(function(){
+$('.nav-tabs > .active').next('li').find('a').trigger('click');
+});
+
+$('.btnPrevious').click(function(){
+$('.nav-tabs > .active').prev('li').find('a').trigger('click');
+});
+    </script>
+{% endblock %}
+
+
+
+'''
+class CourtCase(models.Model):
+    client = models.ForeignKey('Client', null=True)
+
+    case_number = models.CharField(max_length=20, null=True)
+    trial_Date =
+    osc_date =
+    cmc_date =
+    depo_date =
+    mediation_date =
+    arbitration_date =
+    final_status_conference =
+    trial_setting_conf_date =
+'''
+
+
+<li class="Client">
+
+            <h2>Add new Client</h2>
+            <ul style="list-style-type:none">
+                  <li><a href="{% url 'add_client' %}">Add New Client</a></li>
+                  <li><a href="{% url 'clients' %}">View Clients List</a></li>
+                  <li><a href="{% url 'new_client_signup' %}">Add Details</a></li>
+                  <li><a href="#">Edit</a></li>
+              </ul>
+       </li>
+
+<li class="Appointment">
+
+           <h2>Add new Appointment</h2>
+           <ul style="list-style-type:none">
+                 <li><a href="{% url 'appointment_details' %}">Add New Appointment</a></li>
+                 <li><a href="{% url 'appointment_list' %}">View Appointment List</a></li>
+                 <li><a href="#">Edit</a></li>
+             </ul>
+      </li>
+
+<li class="Call Log">
+
+          <h2>Add Call Entry</h2>
+          <ul style="list-style-type:none">
+                <li><a href="{% url 'call_log' %}">Add Call Entry</a></li>
+                <li><a href="{% url 'call_list' %}">View Call Log</a></li>
+                <li><a href="#">Edit</a></li>
+            </ul>
+     </li>
+
+<li class="Other Party Information">
+
+         <h2>Other Party Information</h2>
+         <ul style="list-style-type:none">
+               <li><a href="{% url 'otherparty_info' %}">Add Details</a></li>
+               <li><a href="{% url 'call_list' %}">View Call Log</a></li>
+               
+           </ul>
+    </li>
+
+ <li class="Data Analysis">
+
+         <h2>View Analysis Reports</h2>
+         <ul style="list-style-type:none">
+               <li><a href="{% url 'testgraph' %}">Sample Graph</a></li>
+           </ul>
+    </li>
 

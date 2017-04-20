@@ -35,6 +35,16 @@
                 </div>
             </td>
           </tr>
+          <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ form.date_of_accident.errors }}
+                    <p><label class="col-sm-3" for="{{ form.date_of_accident.id_for_label }}">Date of Accident</label></p>
+                    <div class="col-sm-9">{{ form.date_of_accident|add_class:"form-control" }}</div>
+                </div>
+            </td>
+          </tr>
+
 
           <tr>
             <td style="padding-bottom:10px;">
@@ -49,7 +59,7 @@
             <td style="padding-bottom:10px;">
                 <div class="fieldWrapper">
                     {{ form.caller_name.errors }}
-                    <p><label class="col-sm-3" for="{{ form.caller_name.id_for_label }}"> Name </label></p>
+                    <p><label class="col-sm-3" for="{{ form.caller_name.id_for_label }}"> Caller Name </label></p>
                     <div class="col-sm-9">{{ form.caller_name|add_class:"form-control" }}</div>
                 </div>
             </td>

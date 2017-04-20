@@ -2,43 +2,39 @@
 {% load staticfiles %}
 
 {% block content %}
-{% if user.is_authenticated %}
 
     <div class="page-header">
-          <h1>Appointments</h1>
-
+          <h2 align="left">Call Log</h2>
 
             <div class="table-responsive">
-            <table id="appointment_list" class="table table-hover">
+            <table id="call_list" class="table table-hover">
                 <thead>
                     <tr>
+                        <th>Client</th>
+                        <th>Date of Accident</th>
                         <th>Caller Name</th>
-
-                        <th>Reason for Appointment</th>
+                        <th>Phone Number</th>
                         <th>Notes</th>
-                        <th>Phone No.</th>
                         <th>Date</th>
-                        <th>Time</th>
-                        <th>Cancel / Edit</th>
+
                     </tr>
                 </thead>
                 <tbody>
-                  {% if appointment_list %}
+                  {% if call_list %}
                   <ul>
-                  {% for n in appointment_list %}
+                  {% for n in call_list %}
                     <tr>
-                        <td><a href="/client_detail/">{{n.caller_first_name}} {{n.caller_last_name}}</a></td>
-                        <td>{{n.type_of_appointment}}</td>
-                        <td>{{n.further_appointment_notes}}</td>
-                        <td>{{n.phone_number}}</td>
-                        <td>{{n.appointment_date}}</td>
-                        <td>{{n.appointment_time}}</td>
-                        <td><button type="button" class="btn btn-primary">Cancel</button> <a class="btn btn-default" href="/appointment/"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                        <td><a href="/client_detail/">{{n.client.first_name}} {{n.client.last_name}}</td>
+                        <td>{{n.date_of_accident}}</td>
+                        <td>{{n.caller_name}}</td>
+                        <td>{{n.caller_number}}</td>
+                        <td>{{n.call_notes}}</td>
+                        <td>{{n.call_date}}</td>
                     </tr>
                     {% endfor %}
                   </ul>
                   {% else %}
-                    <p>There are no scheduled appointments.</p>
+                    <p>There are no call records.</p>
                   {% endif %}
                 </tbody>
             </table>
@@ -64,7 +60,5 @@
                 });
             });
         </script>
-{% else %}
-<p2>Please <a href="{% url 'login'%}?next={{request.path}}">Login</a> to access the requested information.</p2>
-{% endif %}
+
 {% endblock %}

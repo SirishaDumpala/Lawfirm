@@ -19,10 +19,12 @@ from django.contrib import admin
 from django.conf.urls import include
 from django.conf import settings
 from django.conf.urls.static import static
+from autoaccident.views import index_attorney
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^autoaccident/', include('autoaccident.urls')),
     url(r'^accounts/', include('django.contrib.auth.urls')), #Add Django site authentication urls (for login, logout, password management)
+    url(r'^autoaccident/$', index_attorney, name= 'index_attorney'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

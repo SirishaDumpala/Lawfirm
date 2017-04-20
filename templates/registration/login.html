@@ -29,27 +29,16 @@
 
         </div>
       <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav ">
-              <li><a href="{% url 'index' %}">Home</a></li>
 
-              <li><a href="{% url 'logout' %}?next=/accounts/logout/">Logout</a></li>
-                      <form class="navbar-form navbar-right">
-                          <input type="text" class="form-control" placeholder="Search...">
-                      </form>
+
+              <li><a><p2><strong>Welcome To LawOffice<strong></p2></a></li>
+
         </ul>
 
       </div>
     </div>
   </div>
 
-  <div class="welcome">
-        {% if client.is_authenticated %}
-          <p>Welcome, {{ client.first_name }} {{client.last_name }}</p>
-
-        {% else %}
-          <p>Welcome, Guest</p>
-        {% endif %}
-  </div>
 
   <form id="login_form" class="form-signin" role="form" method="post" action=".">
     {% csrf_token %}

@@ -1,22 +1,108 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+{% load staticfiles %}
+<html>
 
-  {% block title %}<title>LawOffice</title>{% endblock %}
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-  <!-- Add additional CSS in static file -->
-  {% load static %}
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
+    <!-- ----- CSS ------------------------------------------ -->
+        <link href="{% static 'css/dashboard.css' %}" rel="stylesheet">
+        <link rel="icon" href="{% static 'media/ocv_icon.ico' %}">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
+        <link href="{% static 'css/fullcalendar.css' %}" rel="stylesheet">
+        <link href="http://arshaw.com/js/fullcalendar-1.5.3/fullcalendar/fullcalendar.print.css" rel="stylesheet" />
+
+        <link href="http://netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.min.css" rel="stylesheet">
+        <link href="http://cdnjs.cloudflare.com/ajax/libs/x-editable/1.4.4/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet">
+        <link href="{% static 'css/bootstrap-filterable.css' %}" rel="stylesheet" type="text/css">
+        <link href="{% static 'css/datetimepicker.css' %}" rel="stylesheet">
+
+        <link href="{% static 'css/textfield.css' %}" rel="stylesheet">
+
+    <!--
+
+        <link href="{% static 'css/style.css' %}" rel="stylesheet"> -->
+
+    <!-- --------- JavaScript ------------------------------- -->
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script class="cssdesk" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js" type="text/javascript"></script>
+
+        <script class="cssdesk" src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.0/js/bootstrap.min.js" type="text/javascript"></script>
+        <script class="cssdesk" src="//arshaw.com/js/fullcalendar-1.5.3/fullcalendar/fullcalendar.min.js" type="text/javascript"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/x-editable/1.4.4/bootstrap-editable/js/bootstrap-editable.min.js"></script>
+        <script src="{% static 'js/jquery.filterable.js' %}"></script>
+
+        <script type="text/javascript">var switchTo5x=true;</script>
+        <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+        <script type="text/javascript">stLight.options({publisher: "48952996-13d3-49f3-9854-e6438041a4b3", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+        <script src="http://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+        {% if form %}
+            {{ form.media }}
+        {% endif %}
+
+        </head>
+
 
 <body>
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand">LawOffice</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li><a href="{% url 'index' %}">Home</a></li>
+        <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Clients
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="{% url 'add_client' %}">Add Client</a></li>
+          <li><a href="{% url 'clients' %}">View Client</a></li>
+          <li><a href="{% url 'christmas_list' %}">Christmas List</a></li>
+        </ul>
+      </li>
+      <li class="dropdown">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#">Appointment
+      <span class="caret"></span></a>
+      <ul class="dropdown-menu">
+        <li><a href="{% url 'appointment_details' %}">Add Appointment</a></li>
+        <li><a href="{% url 'appointment_list' %}">View All Appointments</a></li>
+      </ul>
+    </li>
+
+    <li class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Call Log
+    <span class="caret"></span></a>
+    <ul class="dropdown-menu">
+      <li><a href="{% url 'call_log' %}">Add Call Log</a></li>
+      <li><a href="{% url 'call_list' %}">View Call Log</a></li>
+    </ul>
+  </li>
+      <li><a href="{% url 'logout' %}?next=/accounts/logout/">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
 
   <div class="container-fluid">
+
+          <div class="row" style="position:relative">
+              <div id="dr_main" class="col-md-10 col-md-push-2">
+                  {% block body_block %}
+
+
+                  {% endblock %}
+              </div>
+</div>
+</div>
+
+<div class="container-fluid">
 
     <div class="row">
       <div class="col-sm-2">
@@ -25,7 +111,7 @@
           <li><a href="{% url 'index' %}">Home</a></li>
           <li><a href="{% url 'clients' %}">All clients</a></li>
           {% if user.is_authenticated %}
-             <li>User: {{ user.get_username }}</li>
+
              <li><a href="{% url 'logout' %}?next=/accounts/logout/">Logout</a></li>
 
           {% else %}
@@ -40,5 +126,6 @@
     </div>
 
   </div>
+
 </body>
 </html>

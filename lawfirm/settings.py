@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'autoaccident.apps.AutoaccidentConfig',
     'datetimewidget',
     'widget_tweaks',
-    'phonenumber_field',
+    #'phonenumber_field',
 ]
 
 MIDDLEWARE = [

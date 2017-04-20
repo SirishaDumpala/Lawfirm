@@ -1,0 +1,26 @@
+
+{% extends "base_generic.html" %}
+{% load staticfiles %}\
+{% load widget_tweaks %}
+
+{% block title %}Make an Appointment{% endblock %}
+
+{% block content %}
+
+
+<script type="text/javascript">
+
+window.onload = function () {
+	var chart = new CanvasJS.Chart("chartContainer", {
+		title:{
+			text: "My First Chart in CanvasJS"
+		},
+
+  data: {{ data_content|safe }}
+	});
+	chart.render();
+}
+</script>
+<div id="chartContainer" style="height: 300px; width: 50%;"></div>
+
+{% endblock %}

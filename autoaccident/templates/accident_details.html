@@ -4,6 +4,7 @@
 
 {% block title %}AccidentDetails{% endblock %}
 {% block content %}
+{% if user.is_authenticated %}
     <div class="page-header">
           <h1>Accident Details </h1>
     </div>
@@ -38,9 +39,9 @@
           <tr>
               <td style="padding-bottom:10px;">
                   <div class="fieldWrapper">
-                      {{ formA.time_of_accident.errors }}
-                      <p><label class="col-sm-3" for="{{ formA.time_of_accident.id_for_label }}">Time of Accident </label></p>
-                      <div class="col-sm-9">{{ formA.time_of_accident|add_class:"form-control" }}</div>
+                      {{ formA.date_of_accident.errors }}
+                      <p><label class="col-sm-3" for="{{ formA.date_of_accident.id_for_label }}">Date of Accident </label></p>
+                      <div class="col-sm-9">{{ formA.date_of_accident|add_class:"form-control" }}</div>
                   </div>
               </td>
           </tr>
@@ -107,9 +108,65 @@
                   </div>
               </td>
           </tr>
+          <tr>
+              <td style="padding-bottom:10px;">
+                  <div class="fieldWrapper">
+                      {{ formA.incident_photos.errors }}
+                      <p><label class="col-sm-3" for="{{ formA.incident_photos.id_for_label }}">Any photos of the Incident? </label></p>
+                      <div class="col-sm-9">{{ formA.incident_photos|add_class:"form-control" }}</div>
+                  </div>
+              </td>
+          </tr>
+          <tr>
+              <td style="padding-bottom:10px;">
+                  <div class="fieldWrapper">
+                      {{ formA.witness.errors }}
+                      <p><label class="col-sm-3" for="{{ formA.witness.id_for_label }}">Any witness?</label></p>
+                      <div class="col-sm-9">{{ formA.witness|add_class:"form-control" }}</div>
+                  </div>
+              </td>
+          </tr>
+          <tr>
+              <td style="padding-bottom:10px;">
+                  <div class="fieldWrapper">
+                      {{ formA.paramedics.errors }}
+                      <p><label class="col-sm-3" for="{{ formA.paramedics.id_for_label }}">Paramedics at the scene?</label></p>
+                      <div class="col-sm-9">{{ formA.paramedics|add_class:"form-control" }}</div>
+                  </div>
+              </td>
+          </tr>
+          <tr>
+              <td style="padding-bottom:10px;">
+                  <div class="fieldWrapper">
+                      {{ formA.emergency_treatment.errors }}
+                      <p><label class="col-sm-3" for="{{ formA.emergency_treatment.id_for_label }}">Taken to ER? </label></p>
+                      <div class="col-sm-9">{{ formA.emergency_treatment|add_class:"form-control" }}</div>
+                  </div>
+              </td>
+          </tr>
+
+          <tr>
+              <td style="padding-bottom:10px;">
+                  <div class="fieldWrapper">
+                      {{ formA.urgentcare_treatment.errors }}
+                      <p><label class="col-sm-3" for="{{ formA.urgentcare_treatment.id_for_label }}">Did you go to Urgent Care? </label></p>
+                      <div class="col-sm-9">{{ formA.urgentcare_treatment|add_class:"form-control" }}</div>
+                  </div>
+              </td>
+          </tr>
+
+          <tr>
+              <td style="padding-bottom:10px;">
+                  <div class="fieldWrapper">
+                      {{ formA.accident_description.errors }}
+                      <p><label class="col-sm-3" for="{{ formA.accident_description.id_for_label }}">Description of Accident </label></p>
+                      <div class="col-sm-9">{{ formA.accident_description|add_class:"form-control" }}</div>
+                  </div>
+              </td>
+          </tr>
         </table>
         <a class="btn btn-primary btnPrevious" >Previous</a>
-        <a class="btn btn-primary btnNext" >Next</a>
+
         <button type="submit" class="save btn btn-primary">Save</button>
       </form>
   </div>
@@ -125,5 +182,6 @@
   $('.btnPrevious').click(function(){
   $('.nav-tabs > .active').prev('li').find('a').trigger('click');
   });
-      </script>
+  </script>
+  {% endif %}
   {% endblock %}

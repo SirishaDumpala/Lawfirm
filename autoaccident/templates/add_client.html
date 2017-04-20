@@ -1,0 +1,173 @@
+{% extends "base_generic.html" %}
+{% load staticfiles %}\
+{% load widget_tweaks %}
+
+{% block title %}AddNewClient{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+
+<div class="page-header">
+      <h1>New Client</h1>
+</div>
+<div class="container">
+    <div class="header">
+    <ul style="padding-right:60px" class="nav nav-pills pull-right">
+
+      <li {% if bootstrap == 3 %} class="active"{% endif %}><a href="/model_form_v3/"></a></li>
+    </ul>
+
+</div>
+<div role="tabpanel">
+  <ul class="nav nav-tabs">
+
+    <li role="presentation" class="active"><a href="#tabs-1" aria-controls="tabs-1" role="tab" data-toggle="tab">Client Profile</a></li>
+  </ul>
+  <div class="tab-content">
+  <div role="tabpanel" class="tab-pane active" id="tabs-1">
+    <form action="{{ action }}" method="POST">
+      <table>
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ form.first_name.errors }}
+                <p><label class="col-sm-3" for="{{ form.first_name.id_for_label }}">First Name</label></p>
+                <div class="col-sm-9">{{ form.first_name|add_class:"form-control" }}</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ form.middle_name.errors }}
+                <p><label class="col-sm-3" for="{{ form.middle_name.id_for_label }}">Middle Name</label></p>
+                <div class="col-sm-9">{{ form.middle_name|add_class:"form-control" }}</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ form.last_name.errors }}
+                <p><label class="col-sm-3" for="{{ form.last_name.id_for_label }}">Last Name</label></p>
+                <div class="col-sm-9">{{ form.last_name|add_class:"form-control" }}</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ form.phone_number.errors }}
+                <p><label class="col-sm-3" for="{{ form.phone_number.id_for_label }}">Phone Number</label></p>
+                <div class="col-sm-9">{{ form.phone_number|add_class:"form-control"}}</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ form.date_of_birth.errors }}
+                <p><label class="col-sm-3" for="{{ form.date_of_birth.id_for_label }}">Date of Birth</label></p>
+                <div class="col-sm-9">{{ form.date_of_birth|add_class:"form-control" }}</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ form.gender.errors }}
+                <p><label class="col-sm-3" for="{{ form.gender.id_for_label }}">Gender</label></p>
+                <div class="col-sm-9">{{ form.gender|add_class:"form-control" }}</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ form.ssnumber.errors }}
+                <p><label class="col-sm-3" for="{{ form.ssnumber.id_for_label }}">Social Security Number</label></p>
+                <div class="col-sm-9">{{ form.ssnumber|add_class:"form-control" }}</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ form.medicare_coverage.errors }}
+                <p><label class="col-sm-3" for="{{ form.medicare_coverage.id_for_label }}">Covered under Medicare?</label></p>
+                <div class="col-sm-9">{{ form.medicare_coverage|add_class:"form-control" }}</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ form.medicaid_coverage.errors }}
+                <p><label class="col-sm-3" for="{{ form.medicaid_coverage.id_for_label }}">Covered under Medicaid?</label></p>
+                <div class="col-sm-9">{{ form.medicaid_coverage|add_class:"form-control" }}</div>
+            </div>
+        </td>
+    </tr>
+
+
+    <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ form.driver_license.errors }}
+                <p><label class="col-sm-3" for="{{ form.driver_license.id_for_label }}">Driver License Number</label></p>
+                <div class="col-sm-9">{{ form.driver_license|add_class:"form-control" }}</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ form.date_of_accident.errors }}
+                <p><label class="col-sm-3" for="{{ form.date_of_accident.id_for_label }}">Date of Accident</label></p>
+                <div class="col-sm-9">{{ form.date_of_accident|add_class:"form-control" }}</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ form.client_type.errors }}
+                <p><label class="col-sm-3" for="{{ form.client_type.id_for_label }}">Category</label></p>
+                <div class="col-sm-9">{{ form.client_type|add_class:"form-control" }}</div>
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ form.injuries.errors }}
+                <p><label class="col-sm-3" for="{{ form.injuries.id_for_label }}">List the Injuries Suffered in the Accident</label></p>
+                <div class="col-sm-9">{{ form.injuries|add_class:"form-control" }}</div>
+            </div>
+        </td>
+    </tr>
+  </table>
+
+  <button type="submit" class="save btn btn-primary">Save</button>
+</form>
+</div>
+</div>
+</div>
+</div>
+
+<script type="text/javascript">
+$('.btnNext').click(function(){
+$('.nav-tabs > .active').next('li').find('a').trigger('click');
+});
+
+$('.btnPrevious').click(function(){
+$('.nav-tabs > .active').prev('li').find('a').trigger('click');
+});
+</script>
+{% else %}
+<p2>Please <a href="{% url 'login'%}?next={{request.path}}">Login</a> to access the requested information.</p2>
+{% endif %}
+
+{% endblock %}

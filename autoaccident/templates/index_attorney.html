@@ -1,22 +1,36 @@
 {% extends 'base_generic.html' %}
 
 {% load staticfiles %}
-{% block title %}Welcome to Law Office{% endblock %}
-{% block body_block %}
+{% block content %}
 
 
 <div style="padding-left:40px;" class="page-header">
     {% if user.is_authenticated %}
-            <h1>Welcome to Law Office, {{ user.first_name }}!</h1>
+            <h1>Welcome</h1>
     {% else %}
             <h1>Welcome to Law Office</h1>
     {% endif %}
 </div>
 
-    <div class="doctor_calendar"></div>
+
         <div class="container-fluid">
-            <div id='calendar'></div>
+            <div
+            {% if user.is_authenticated %}
+                <li class="Client">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Client <span class="caret"></span></a>
+                      <ul class="dropdown-menu" role="menu">
+                          <li><a href="/new_client_signup/">Add</a></li>
+                          <li><a href="/client_list/">View</a></li>
+                          <li><a href="#">Edit</a></li>
+                      </ul>
+               </li>
+            {% else %}
+
+                <li><a href="{% url 'auth_login' %}">Login</a></li>
+            {% endif %}
+          </div>
         </div>
+
 
 
 

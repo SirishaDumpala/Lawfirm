@@ -2,15 +2,53 @@
 
 {% load staticfiles %}
 {% block title %}Welcome to Law Office{% endblock %}
-{% block body_block %}
+{% block content %}
 
 
 <div style="padding-left:40px;" class="page-header">
     {% if user.is_authenticated %}
-            <h1>Welcome to Law Office, {{ user.first_name }}!</h1>
+            <h2>Welcome, {{ user.get_username }}!</h2>
     {% else %}
             <h1>Welcome to Law Office</h1>
     {% endif %}
+</div>
+
+<div class="container">
+  <ul style="list-style-type:none">
+    {% if request.user.is_authenticated %}
+
+    <h2>Client</h2>
+    <div class="list-group">
+      <a href="{% url 'add_client' %}" class="list-group-item">Add New Client</a>
+      <a href="{% url 'clients' %}" class="list-group-item">View All Clients</a>
+      <a href="{% url 'new_client_signup' %}" class="list-group-item">Add Case Details</a>
+    </div>
+  <h2>Appointment</h2>
+    <div class="list-group">
+      <a href="{% url 'appointment_details' %}" class="list-group-item">Add New Appointment</a>
+      <a href="{% url 'appointment_list' %}" class="list-group-item">View All Appointments</a>
+    </div>
+  <h2>Call Log</h2>
+    <div class="list-group">
+    <a href="{% url 'call_log' %}" class="list-group-item">Add New Entry</a>
+    <a href="{% url 'appointment_list' %}" class="list-group-item">View All Appointments</a>
+    </div>
+  <h2>Other Party Information</h2>
+      <div class="list-group">
+      <a href="{% url 'otherparty_info' %}" class="list-group-item">Add Details</a>
+      </div>
+  <h2>Data Analytics</h2>
+      <div class="list-group">
+
+        <a href="{% url 'testgraph' %}" class="list-group-item">Sample Graph</a>
+
+      </div>
+
+    {% else %}
+
+        <li><a href="{% url 'auth_login' %}">Login</a></li>
+    {% endif %}
+</ul>
 </div>
 
 

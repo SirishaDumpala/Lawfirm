@@ -21,6 +21,7 @@
         <li role="presentation" class="active"><a href="#tabs-1" aria-controls="tabs-1" role="tab" data-toggle="tab">Other Party Profile</a></li>
         <li role="presentation"><a href="#tabs-2" aria-controls="tabs-2" role="tab" data-toggle="tab">Other Party Address</a></li>
         <li role="presentation"><a href="#tabs-3" aria-controls="tabs-3" role="tab" data-toggle="tab">Other Party Vehicle</a></li>
+        <li role="presentation"><a href="#tabs-4" aria-controls="tabs-4" role="tab" data-toggle="tab">Other Party Insurance</a></li>
       </ul>
       <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="tabs-1">
@@ -50,8 +51,8 @@
             <td style="padding-bottom:10px;">
                 <div class="fieldWrapper">
                     {{ formA.otherparty_phonenumber.errors }}
-                    <p><label class="col-sm-3" for="{{ formA.phonenumber.id_for_label }}">Phone Number</label></p>
-                    <div class="col-sm-9">{{ formA.phonenumber|add_class:"form-control"}}</div>
+                    <p><label class="col-sm-3" for="{{ formA.otherparty_phonenumber.id_for_label }}">Phone Number</label></p>
+                    <div class="col-sm-9">{{ formA.otherparty_phonenumber|add_class:"form-control"}}</div>
                 </div>
             </td>
         </tr>
@@ -79,15 +80,6 @@
                     {{ formA.otherparty_driver_license.errors }}
                     <p><label class="col-sm-3" for="{{ formA.otherparty_driver_license.id_for_label }}">Driver License Number</label></p>
                     <div class="col-sm-9">{{ formA.otherparty_driver_license|add_class:"form-control" }}</div>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td style="padding-bottom:10px;">
-                <div class="fieldWrapper">
-                    {{ formA.otherparty_number_of_passengers.errors }}
-                    <p><label class="col-sm-3" for="{{ formA.otherparty_number_of_passengers.id_for_label }}">Number of Passengers</label></p>
-                    <div class="col-sm-9">{{ formA.otherparty_number_of_passengers|add_class:"form-control" }}</div>
                 </div>
             </td>
         </tr>
@@ -201,29 +193,75 @@
             </div>
         </td>
       </tr>
-      <tr>
-        <td style="padding-bottom:10px;">
-            <div class="fieldWrapper">
-                {{ formC.otherparty_damage_location.errors }}
-                <p><label class="col-sm-3" for="{{ formC.otherparty_damage_location.id_for_label }}">Damage Location</label></p>
-                <div class="col-sm-9">{{ formC.otherparty_damage_location|add_class:"form-control" }}</div>
-            </div>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding-bottom:10px;">
-            <div class="fieldWrapper">
-                {{ formC.otherparty_damage_description.errors }}
-                <p><label class="col-sm-3" for="{{ formC.otherparty_damage_description.id_for_label }}">Description of Property Damage</label></p>
-                <div class="col-sm-9">{{ formC.otherparty_damage_description|add_class:"form-control" }}</div>
-            </div>
-        </td>
-      </tr>
       </table>
       <a class="btn btn-primary btnPrevious" >Previous</a>
       <a class="btn btn-primary btnNext" >Next</a>
-      <button type="submit" class="save btn btn-primary">Save</button>
-    </form>
+  </form>
+</div>
+<div role="tabpanel" class="tab-pane" id="tabs-4">
+  <form action="{{ action }}" method="POST">
+    <table>
+    {% csrf_token %}
+    {{ formD.non_field_errors }}
+    <tr>
+          <td style="padding-bottom:10px;">
+              <div class="fieldWrapper">
+                  {{ formD.other_insurnace_company.errors }}
+                  <p><label class="col-sm-3" for="{{ formD.other_insurnace_company.id_for_label }}">Insurance Company</label></p>
+                  <div class="col-sm-9">{{ formD.other_insurnace_company|add_class:"form-control"}}</div>
+              </div>
+          </td>
+      </tr>
+      <tr>
+          <td style="padding-bottom:10px;">
+              <div class="fieldWrapper">
+                  {{ formD.other_Policy_holder_name.errors }}
+                  <p><label class="col-sm-3" for="{{ formD.other_Policy_holder_name.id_for_label }}">Policy Holder Name</label></p>
+                  <div class="col-sm-9">{{ formD.other_Policy_holder_name|add_class:"form-control"}}</div>
+              </div>
+          </td>
+      </tr>
+      <tr>
+          <td style="padding-bottom:10px;">
+              <div class="fieldWrapper">
+                  {{ formD.other_policy_number.errors }}
+                  <p><label class="col-sm-3" for="{{ formD.other_policy_number.id_for_label }}">Policy Number</label></p>
+                  <div class="col-sm-9">{{ formD.other_policy_number|add_class:"form-control"}}</div>
+              </div>
+          </td>
+      </tr>
+      <tr>
+          <td style="padding-bottom:10px;">
+              <div class="fieldWrapper">
+                  {{ formD.other_type_of_coverage.errors }}
+                  <p><label class="col-sm-3" for="{{ formD.other_type_of_coverage.id_for_label }}">Type of Coverage</label></p>
+                  <div class="col-sm-9">{{ formD.other_type_of_coverage|add_class:"form-control"}}</div>
+              </div>
+          </td>
+      </tr>
+      <tr>
+          <td style="padding-bottom:10px;">
+              <div class="fieldWrapper">
+                  {{ formD.other_policy_limit_pd.errors }}
+                  <p><label class="col-sm-3" for="{{ formD.other_policy_limit_pd.id_for_label }}">Propert Damage Coverage iimit</label></p>
+                  <div class="col-sm-9">{{ formD.other_policy_limit_pd|add_class:"form-control"}}</div>
+              </div>
+          </td>
+      </tr>
+      <tr>
+          <td style="padding-bottom:10px;">
+              <div class="fieldWrapper">
+                  {{ formD.other_policy_limit.errors }}
+                  <p><label class="col-sm-3" for="{{ formD.other_policy_limit.id_for_label }}">Policy limit</label></p>
+                  <div class="col-sm-9">{{ formD.other_policy_limit|add_class:"form-control"}}</div>
+              </div>
+          </td>
+      </tr>
+    </table>
+    <a class="btn btn-primary btnPrevious" >Previous</a>
+    <button type="submit" class="save btn btn-primary">Save</button>
+
+  </form>
 </div>
 </div>
 </div>
