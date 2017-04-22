@@ -10,7 +10,8 @@ from django.core.urlresolvers import reverse
 import datetime
 from django.contrib.auth.decorators import login_required
 from .forms import NewClientForm, ClientAddressForm, ClientVehicleForm, OtherPartyInfoForm, OtherPartyAddressForm, OtherPartyVehicleForm, AccidentDetailsForm, AppointmentForm, CallLogForm, DoctorInfoForm, ClaimInfoForm, InsuranceInfoForm, OtherPartyInsuranceForm
-
+from django.db.models import Count, Avg
+from django.db.models.functions import TruncMonth, ExtractMonth
 
 # Create your views here.
 
@@ -43,6 +44,7 @@ class ClientListView(generic.ListView):
 class ClientDetailView(generic.DetailView):
     model = Client
 
+
 @login_required
 def AddClient(request):
     """
@@ -65,7 +67,7 @@ def AddClient(request):
             #client_inst.groups.add(Group.objects.get(name='client'))
             print ("saved client")
             # redirect to a new URL:
-            return client_list(request)
+            return ClientListView(request)
         else:
             print(form.errors)
 
@@ -120,9 +122,8 @@ def NewClient(request):
             #client_inst.groups.add(Group.objects.get(name='client'))
             print ("saved client")
             # redirect to a new URL:
-            return client_detail(request)
+            return ClientListView(request)
         else:
-
             print("Validation Failed with errors formB: ", formB.errors)
             print("Validation Failed with errors formC: ", formC.errors)
             print("Validation Failed with errors formD: ", formD.errors)
@@ -208,14 +209,14 @@ def OtherParty(request):
     return render(request, 'otherparty_info.html', {'formA': formA, 'formB': formB, 'formC': formC, 'formD': formD})
 
 @login_required
-def AccidentDetails(request):
+def AccidentDetailsView(request):
     if request.method == 'POST':
         formA = AccidentDetailsForm(request.POST)
         if formA.is_valid():
-            accident_details = fromA.save(commit=False)
+            accident_details = formA.save(commit=False)
             accident_details.save()
 
-            return accident_details(request)
+            return ClientDetail(request, pk)
         else:
             print (formA.errors)
     else:
@@ -234,7 +235,7 @@ def AppointmentDetails(request):
 
             # The user will be shown the appointment detail page view.
             print (appointment_details)
-            return appointment_details(request)
+            return AppointmentList(request)
         else:
             print (form.errors)
     else:
@@ -261,6 +262,7 @@ def CallLogView(request):
         if form.is_valid():
             call_details = form.save(commit=False)
             call_details.save()
+            return CallList(request)
         else:
             print(form.errors)
     else:
@@ -314,10 +316,10 @@ def ClientDetail(request, pk):
     client_vehicle = ClientVehicle.objects.get(client_id=pk)
     treatment_info = DoctorInfo.objects.get(client_id=pk)
     print ("Client treatment: ", treatment_info.hospital_name)
-    #accident_details = AccidentDetails.objects.get(client_id=pk)
+    accident_details = AccidentDetails.objects.get(client_id=pk)
     #Insurance_info = InsuranceInformation.objects.get(client_id=pk)
     #otherparty_info = OtherPartyInformation.objects.filter(client_id=pk)
-    context_dict = {'profile': client_profile, 'address': client_address, 'vehicle': client_vehicle, 'treatment': treatment_info}
+    context_dict = {'profile': client_profile, 'address': client_address, 'vehicle': client_vehicle, 'treatment': treatment_info, 'accident_details':accident_details}
     print("in client profile")
     return render(request, 'client_detail.html', context_dict)
 
@@ -362,9 +364,53 @@ def EditClient(request, pk):
 @login_required
 def Analytics(request):
     #data_content = str("[{type: \"column\",dataPoints: [{ label: \"apple\",  y: 10  },{ label: \"orange\", y: 15  },{ label: \"banana\", y: 25  },{ label: \"mango\",  y: 30  },{ label: \"grape\",  y: 28  }]}]")
-    data_content = """[{type: "column",dataPoints: [{ label: "apple",  y: 10  },{ label: "orange", y: 15  },{ label: "banana", y: 25  },{ label: "mango",  y: 30  },{ label: "grape",  y: 28  }]}]"""
+    #data_content = """[{type: "column",dataPoints: [{ label: "apple",  y: 10  },{ label: "orange", y: 15  },{ label: "banana", y: 25  },{ label: "mango",  y: 30  },{ label: "grape",  y: 28  }]}]"""
+    male_Count = Client.objects.all().filter(gender="male").count()
+    female_Count = Client.objects.all().filter(gender="female").count()
+    print("Male :", male_Count , " & Female: ", female_Count)
+    data_content = """[{type: "column",dataPoints: [{ label: "Male",  y: """+ str(male_Count) +"""  },{ label: "Female", y: """+str(female_Count) +""" }]}]"""
     print (data_content)
-    return render(request, 'testgraph.html',{'data_content': data_content})
+
+    #Form data for Pie Chart - Weather Conditions related to accidents
+    weather_list = AccidentDetails.objects.all().order_by('weather_condition').values('weather_condition').annotate(total=Count('weather_condition'))
+    print ("weather_list: ", weather_list)
+    pie_data_content = []
+    #print (weather_list[0])
+
+    for n in weather_list:
+        print ("Object type in weather_list: ",type(n))
+        pie_data_content.append("{ y: "+str(n["total"])+",  indexLabel: \""+n["weather_condition"]+"\" }")
+
+    print (', '.join(pie_data_content))
+    pie_data = "["+ ','.join(pie_data_content) +"]"
+    print ("pie_data: ",pie_data)
+
+    #Data for Trend chart - Accidents by Month
+    trend_data_content =[]
+    trend_list = AccidentDetails.objects.annotate(month=ExtractMonth('date_of_accident')).values('month').annotate(c=Count('id')).values('month','c')
+    print ("trend_list: ", trend_list)
+
+    for m in trend_list:
+        trend_data_content.append("{ x: new Date(2016, "+str(m["month"]-1)+", 1), y: "+str(m["c"])+"}")
+
+    trend_data = "["+','.join(trend_data_content)+"]"
+    print("trend_data: ", trend_data)
+
+    #Data for City Pie Chart
+    city_list = AccidentDetails.objects.all().order_by('city_of_accident').values('city_of_accident').annotate(total=Count('city_of_accident'))
+    print ("city_list: ", city_list)
+    city_data_content = []
+    #print (weather_list[0])
+
+    for q in city_list:
+        #print ("Object type in weather_list: ",type(n))
+        city_data_content.append("{ y: "+str(q["total"])+",  indexLabel: \""+q["city_of_accident"]+"\" }")
+
+    print (', '.join(city_data_content))
+    city_data = "["+ ','.join(city_data_content) +"]"
+    print ("city_data: ",city_data)
+
+    return render(request, 'testgraph.html',{'data_content': data_content, 'pie_data': pie_data, 'trend_data':trend_data, 'city_data':city_data})
 
 
 def InsuranceInfoView(request):

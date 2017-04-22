@@ -76,7 +76,7 @@
               <td style="padding-bottom:10px;">
                   <div class="fieldWrapper">
                       {{ formA.intersection_of_accident.errors }}
-                      <p><label class="col-sm-3" for="{{ formA.intersection_of_accident.id_for_label }}">Intersection of Accident </label></p>
+                      <p><label class="col-sm-3" for="{{ formA.intersection_of_accident.id_for_label }}">Location of Accident </label></p>
                       <div class="col-sm-9">{{ formA.intersection_of_accident|add_class:"form-control" }}</div>
                   </div>
               </td>
@@ -155,15 +155,6 @@
               </td>
           </tr>
 
-          <tr>
-              <td style="padding-bottom:10px;">
-                  <div class="fieldWrapper">
-                      {{ formA.accident_description.errors }}
-                      <p><label class="col-sm-3" for="{{ formA.accident_description.id_for_label }}">Description of Accident </label></p>
-                      <div class="col-sm-9">{{ formA.accident_description|add_class:"form-control" }}</div>
-                  </div>
-              </td>
-          </tr>
         </table>
         <a class="btn btn-primary btnPrevious" >Previous</a>
 

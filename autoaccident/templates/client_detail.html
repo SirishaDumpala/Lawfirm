@@ -6,7 +6,7 @@
 {% if user.is_authenticated %}
 
   <div class="page-header">
-        <h1>client Profile</h1>
+        <h1>Client Profile</h1>
   </div>
   <div class="container">
     <div class="header">
@@ -21,6 +21,7 @@
     <li role="presentation"><a href="#tabs-1" aria-controls="tabs-1" role="tab" data-toggle="tab">Personal Information</a></li>
     <li role="presentation"><a href="#tabs-2" aria-controls="tabs-2" role="tab" data-toggle="tab">Vehicle Information</a></li>
     <li role="presentation"><a href="#tabs-3" aria-controls="tabs-3" role="tab" data-toggle="tab">Treatment Information</a></li>
+    <li role="presentation"><a href="#tabs-4" aria-controls="tabs-4" role="tab" data-toggle="tab">Accident Details</a></li>
 
   </ul>
 
@@ -107,10 +108,7 @@
                     <th scope="row" class="col-md-2">Carseat</th>
                     <td>{{vehicle.carseat}}</td>
                 </tr>
-                <tr>
-                    <th scope="row" class="col-md-2">Damage Location</th>
-                    <td>{{vehicle.damage_location}}</td>
-                </tr>
+                
               </tbody>
           </table>
         </div>
@@ -155,7 +153,72 @@
           </div>
           <br/><br/><br/>
           <a class="btn btn-primary btnPrevious" >Previous</a>
+          <a class="btn btn-primary btnNext" >Next</a>
 
+          </div>
+          <div role="tabpanel" class="tab-pane" id="tabs-4">
+            <br/>
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <tbody>
+                  <tr>
+                      <th scope="row" class="col-md-2">Date of Accident</th>
+                      <td>{{accident_details.date_of_accident}}</td>
+                  </tr>
+                  <tr>
+                      <th scope="row" class="col-md-2">Time of Accident</th>
+                      <td>{{accident_details.time_of_accident}}</td>
+                  </tr>
+                <tr>
+                    <th scope="row" class="col-md-2">Weather Condition</th>
+                    <td>{{accident_details.weather_condition}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="col-md-2">City of Accident</th>
+                    <td>{{accident_details.city_of_accident}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="col-md-2">Location (Street Name)</th>
+                    <td>{{accident_details.intersection_of_accident}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="col-md-2">Police Report Filed?</th>
+                    <td>{{accident_details.police_report}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="col-md-2">Police Report Number</th>
+                    <td>{{accident_details.police_report_number}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="col-md-2">Brief Description</th>
+                    <td>{{accident_details.accident_description}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="col-md-2">Photos</th>
+                    <td>{{accident_details.incident_photos}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="col-md-2">Witness</th>
+                    <td>{{accident_details.witness}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="col-md-2">Paramedics</th>
+                    <td>{{accident_details.paramedics}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="col-md-2">Emergency Treatment</th>
+                    <td>{{accident_details.emergency_treatment}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="col-md-2">Urgent Care</th>
+                    <td>{{accident_details.urgentcare_treatment}}</td>
+                </tr>
+
+                </tbody>
+            </table>
+          </div>
+          <br/><br/><br/>
+          <a class="btn btn-primary btnPrevious" >Previous</a>
           </div>
 
         </div>

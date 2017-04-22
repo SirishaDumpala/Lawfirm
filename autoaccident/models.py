@@ -36,7 +36,7 @@ class Client(models.Model):
     client_type = models.CharField(max_length=50, choices=CLIENT_CHOICES, null=True)
     phone_number = models.CharField(max_length=14, null = True)
     date_of_birth = models.DateField(_("Date of Birth"), null = True)
-    driver_license = models.CharField(max_length=14, null = True)
+    driver_license = models.CharField(max_length=8, null = True)
     gender = models.CharField(max_length=50, choices=GENDER_CHOICES, null = True)
     ssnumber = models.CharField(max_length=9, null = True)
     medicare_coverage = models.BooleanField(default=False, help_text='Are you covered by Medicare?')
@@ -135,7 +135,7 @@ class OtherPartyInformation(models.Model):
     otherparty_phonenumber = models.CharField(max_length=14, null = True)
     otherparty_date_of_birth = models.DateField(_("Date of Birth"), null = True)
     otherparty_gender = models.CharField(max_length=50, choices=GENDER_CHOICES, null = True)
-    otherparty_driver_license = models.CharField(max_length=14, null = True)
+    otherparty_driver_license = models.CharField(max_length=8, null = True)
     #otherparty_number_of_passengers = models.IntegerField(null=True, blank=True)
     # following is other party's address details.
 
@@ -169,9 +169,11 @@ class OtherPartyInformation(models.Model):
 class AccidentDetails(models.Model):
 # model representing the details of the incident, and police report.
 
-    CLIMATE_CHOICES = (('sunny', 'Sunny'),
+    CLIMATE_CHOICES = (('normal', 'Normal'),
                         ('cloudy', 'Cloudy'),
                         ('rainy', 'Rainy'),
+                        ('foggy','Foggy'),
+                        ('windy','Windy')
                         )
 
     client = models.ForeignKey('Client', null=True)
@@ -219,10 +221,10 @@ class InsuranceInformation(models.Model):
                         ('Personal Injury Protection', 'personal injury protection'))
 
     # Attributes for own insursnce information
-    insurance_company = models.CharField(max_length=20, null=True)
+    insurance_company = models.CharField(max_length=50, null=True)
     policy_holder_name = models.CharField(max_length=30, null=True)
     policy_number = models.CharField(max_length=15, null=True)
-    type_of_coverage = models.CharField(max_length=20, choices=COVERAGE_CHOICES, null = True)
+    type_of_coverage = models.CharField(max_length=50, choices=COVERAGE_CHOICES, null = True)
     coverage_limit_pd = models.CharField(max_length=8, null=True,help_text='Enter the policy limit for property damage in dollars')
     coverage_limit_medical = models.CharField(max_length=8, null=True, help_text='Enter the policy limit for medical in dollars')
     rental_coverage = models.BooleanField(default=False, help_text='Does clients insurance cover rental vehicle?')
@@ -305,7 +307,7 @@ class CallLog(models.Model):
 class DoctorInfo(models.Model):
     client = models.ForeignKey('Client', null=True)
 
-    hospital_name = models.CharField(max_length=20, null=True)
+    hospital_name = models.CharField(max_length=50, null=True)
     hospital_number = models.CharField(max_length=10, null = True)
     lien = models.BooleanField(default=False, help_text='lien signed?')
 

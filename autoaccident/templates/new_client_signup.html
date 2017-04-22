@@ -5,7 +5,7 @@
 {% block title %}AddNewClient{% endblock %}
 {% block content %}
     <div class="page-header">
-          <h1>Add New Client </h1>
+          <h1>Add New Client</h1>
     </div>
     <div class="container">
         <div class="header">
@@ -17,20 +17,20 @@
     </div>
     <div role="tabpanel">
       <ul class="nav nav-tabs">
-
-        <li role="presentation"><a href="#tabs-1" aria-controls="tabs-1" role="tab" data-toggle="tab">Client Address</a></li>
-        <li role="presentation"><a href="#tabs-2" aria-controls="tabs-2" role="tab" data-toggle="tab">Client Vehicle</a></li>
+        <li role="presentation"><a href="#tabs-1" aria-controls="tabs-1" role="tab" data-toggle="tab">Address</a></li>
+        <li role="presentation"><a href="#tabs-2" aria-controls="tabs-2" role="tab" data-toggle="tab">Vehicle</a></li>
         <li role="presentation"><a href="#tabs-3" aria-controls="tabs-3" role="tab" data-toggle="tab">Claim Details</a></li>
-        <li role="presentation"><a href="#tabs-4" aria-controls="tabs-4" role="tab" data-toggle="tab">Insurance Information</a></li>
-        <li role="presentation"><a href="#tabs-5" aria-controls="tabs-5" role="tab" data-toggle="tab">Treatment</a></li>
+        <li role="presentation"><a href="#tabs-4" aria-controls="tabs-4" role="tab" data-toggle="tab">Insurance</a></li>
+        <li role="presentation"><a href="#tabs-5" aria-controls="tabs-5" role="tab" data-toggle="tab">Accident Details</a></li>
+        <li role="presentation"><a href="#tabs-6" aria-controls="tabs-6" role="tab" data-toggle="tab">Treatment</a></li>
       </ul>
       <form action="{{ action }}" method="POST">
       <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="tabs-1">
 
           <table>
-            {% csrf_token %}
-            {{ formB.non_field_errors }}
+          {% csrf_token %}
+          {{ formB.non_field_errors }}
             <tr>
             <td style="padding-bottom:10px;">
                 <div class="fieldWrapper">
@@ -87,9 +87,9 @@
         </tr>
       </table>
       <a class="btn btn-primary btnNext" >Next</a>
-
+    </form>
   </div>
-    <div role="tabpanel" class="tab-pane" id="tabs-2">
+  <div role="tabpanel" class="tab-pane" id="tabs-2">
 
         <table>
         {% csrf_token %}
@@ -161,11 +161,9 @@
     </table>
     <a class="btn btn-primary btnPrevious" >Previous</a>
     <a class="btn btn-primary btnNext" >Next</a>
-
-
-  </div>
-
-  <div role="tabpanel" class="tab-pane" id="tabs-3">
+  </form>
+</div>
+<div role="tabpanel" class="tab-pane" id="tabs-3">
 
       <table>
       {% csrf_token %}
@@ -256,9 +254,9 @@
 </table>
   <a class="btn btn-primary btnPrevious" >Previous</a>
   <a class="btn btn-primary btnNext" >Next</a>
+</form>
 </div>
-
-  <div role="tabpanel" class="tab-pane" id="tabs-4">
+<div role="tabpanel" class="tab-pane" id="tabs-4">
 
       <table>
       {% csrf_token %}
@@ -348,10 +346,139 @@
 </table>
   <a class="btn btn-primary btnPrevious" >Previous</a>
   <a class="btn btn-primary btnNext" >Next</a>
+  </form>
 </div>
+<div role="tabpanel" class="tab-pane active" id="tabs-5">
 
-<div role="tabpanel" class="tab-pane" id="tabs-5">
-   <form action="{{ action }}" method="POST">
+    <table>
+    {% csrf_token %}
+    {{ formF.non_field_errors }}
+    <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formF.date_of_accident.errors }}
+                <p><label class="col-sm-3" for="{{ formF.date_of_accident.id_for_label }}">Date of Accident </label></p>
+                <div class="col-sm-9">{{ formF.date_of_accident|add_class:"form-control" }}</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formF.time_of_accident.errors }}
+                <p><label class="col-sm-3" for="{{ formF.time_of_accident.id_for_label }}">Time of Accident </label></p>
+                <div class="col-sm-9">{{ formF.time_of_accident|add_class:"form-control" }}</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formF.weather_condition.errors }}
+                <p><label class="col-sm-3" for="{{ formF.weather_condition.id_for_label }}">Weather At The Time of Accident </label></p>
+                <div class="col-sm-9">{{ formF.weather_condition|add_class:"form-control" }}</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formF.city_of_accident.errors }}
+                <p><label class="col-sm-3" for="{{ formF.city_of_accident.id_for_label }}">City of Accident </label></p>
+                <div class="col-sm-9">{{ formF.city_of_accident|add_class:"form-control" }}</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formF.intersection_of_accident.errors }}
+                <p><label class="col-sm-3" for="{{ formF.intersection_of_accident.id_for_label }}">Location of Accident </label></p>
+                <div class="col-sm-9">{{ formF.intersection_of_accident|add_class:"form-control" }}</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formF.police_report.errors }}
+                <p><label class="col-sm-3" for="{{ formF.police_report.id_for_label }}">Police Report Filed? </label></p>
+                <div class="col-sm-9">{{ formF.police_report|add_class:"form-control" }}</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formF.police_report_number.errors }}
+                <p><label class="col-sm-3" for="{{ formF.police_report_number.id_for_label }}">Police Report Number </label></p>
+                <div class="col-sm-9">{{ formF.police_report_number|add_class:"form-control" }}</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formF.accident_description.errors }}
+                <p><label class="col-sm-3" for="{{ formF.accident_description.id_for_label }}">Description of Accident </label></p>
+                <div class="col-sm-9">{{ formF.accident_description|add_class:"form-control" }}</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formF.incident_photos.errors }}
+                <p><label class="col-sm-3" for="{{ formF.incident_photos.id_for_label }}">Any photos of the Incident? </label></p>
+                <div class="col-sm-9">{{ formF.incident_photos|add_class:"form-control" }}</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formF.witness.errors }}
+                <p><label class="col-sm-3" for="{{ formF.witness.id_for_label }}">Any witness?</label></p>
+                <div class="col-sm-9">{{ formF.witness|add_class:"form-control" }}</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formF.paramedics.errors }}
+                <p><label class="col-sm-3" for="{{ formF.paramedics.id_for_label }}">Paramedics at the scene?</label></p>
+                <div class="col-sm-9">{{ formF.paramedics|add_class:"form-control" }}</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formF.emergency_treatment.errors }}
+                <p><label class="col-sm-3" for="{{ formF.emergency_treatment.id_for_label }}">Taken to ER? </label></p>
+                <div class="col-sm-9">{{ formF.emergency_treatment|add_class:"form-control" }}</div>
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formF.urgentcare_treatment.errors }}
+                <p><label class="col-sm-3" for="{{ formF.urgentcare_treatment.id_for_label }}">Did you go to Urgent Care? </label></p>
+                <div class="col-sm-9">{{ formF.urgentcare_treatment|add_class:"form-control" }}</div>
+            </div>
+        </td>
+    </tr>
+
+  </table>
+  <a class="btn btn-primary btnPrevious" >Previous</a>
+  <a class="btn btn-primary btnNext" >Next</a>
+  </form>
+</div>
+<div role="tabpanel" class="tab-pane" id="tabs-6">
+  
      <table>
      {% csrf_token %}
 
@@ -408,9 +535,7 @@
     <a class="btn btn-primary btnPrevious" >Previous</a>
     <button type="submit" class="save btn btn-primary">Save</button>
   </form>
-
 </div>
-
 </div>
 </div>
 </div>
