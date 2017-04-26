@@ -1,0 +1,131 @@
+{% extends "base_generic.html" %}
+{% load staticfiles %}\
+{% load widget_tweaks %}
+
+{% block title %}Court Filing Details{% endblock %}
+{% block content %}
+    <div class="page-header">
+          <h1>Court Filing Details</h1>
+    </div>
+    <div class="container">
+        <div class="header">
+        <ul style="padding-right:60px" class="nav nav-pills pull-right">
+
+          <li {% if bootstrap == 3 %} class="active"{% endif %}><a href="/model_form_v3/"></a></li>
+        </ul>
+
+    </div>
+    <div role="tabpanel">
+      <ul class="nav nav-tabs">
+
+        <li role="presentation" class="active"><a href="#tabs-1" aria-controls="tabs-1" role="tab" data-toggle="tab">Case Details</a></li>
+      </ul>
+      <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="tabs-1">
+        <form action="{{ action }}" method="POST">
+          <table>
+          {% csrf_token %}
+          {{ form.non_field_errors }}
+          <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ form.client.errors }}
+                    <p><label class="col-sm-3" for="{{ form.client.id_for_label }}">Client</label></p>
+                    <div class="col-sm-9">{{ form.client|add_class:"form-control" }}</div>
+                </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ form.trial_Date.errors }}
+                    <p><label class="col-sm-3" for="{{ form.trial_Date.id_for_label }}">Trial Date</label></p>
+                    <div class="col-sm-9">{{ form.trial_Date|add_class:"form-control" }}</div>
+                </div>
+            </td>
+          </tr>
+
+
+          <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ form.osc_date.errors }}
+                    <p><label class="col-sm-3" for="{{ form.osc_date.id_for_label }}">Order To Show Cause Date</label></p>
+                    <div class="col-sm-9">{{ form.osc_date|add_class:"form-control" }}</div>
+                </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding-bottom:10px;">
+                <div class="fieldWrapper">
+                    {{ form.cmc_date.errors }}
+                    <p><label class="col-sm-3" for="{{ form.cmc_date.id_for_label }}">CMC Date</label></p>
+                    <div class="col-sm-9">{{ form.cmc_date|add_class:"form-control" }}</div>
+                </div>
+            </td>
+          </tr>
+
+          <tr>
+              <td style="padding-bottom:10px;">
+                  <div class="fieldWrapper">
+                      {{ form.depo_date.errors }}
+                      <p><label class="col-sm-3" for="{{ form.depo_date.id_for_label }}">Deposition Date</label></p>
+                      <div class="col-sm-9">{{ form.depo_date|add_class:"form-control" }}</div>
+                  </div>
+              </td>
+          </tr>
+          <tr>
+              <td style="padding-bottom:10px;">
+                  <div class="fieldWrapper">
+                      {{ form.mediation_date.errors }}
+                      <p><label class="col-sm-3" for="{{ form.mediation_date.id_for_label }}">Mediation Date</label></p>
+                      <div class="col-sm-9">{{ form.mediation_date|add_class:"form-control" }}</div>
+                  </div>
+              </td>
+          </tr>
+          <tr>
+              <td style="padding-bottom:10px;">
+                  <div class="fieldWrapper">
+                      {{ form.arbitration_date.errors }}
+                      <p><label class="col-sm-3" for="{{ form.arbitration_date.id_for_label }}">Arbitration Date</label></p>
+                      <div class="col-sm-9">{{ form.arbitration_date|add_class:"form-control" }}</div>
+                  </div>
+              </td>
+          </tr>
+          <tr>
+              <td style="padding-bottom:10px;">
+                  <div class="fieldWrapper">
+                      {{ form.final_status_conference.errors }}
+                      <p><label class="col-sm-3" for="{{ form.final_status_conference.id_for_label }}">FinalStatus Conference</label></p>
+                      <div class="col-sm-9">{{ form.final_status_conference|add_class:"form-control" }}</div>
+                  </div>
+              </td>
+          </tr>
+          <tr>
+              <td style="padding-bottom:10px;">
+                  <div class="fieldWrapper">
+                      {{ form.trial_setting_conf_date.errors }}
+                      <p><label class="col-sm-3" for="{{ form.trial_setting_conf_date.id_for_label }}">Trial Setting Conference</label></p>
+                      <div class="col-sm-9">{{ form.trial_setting_conf_date|add_class:"form-control" }}</div>
+                  </div>
+              </td>
+          </tr>
+        </table>
+
+        <button type="submit" class="save btn btn-primary">Save</button>
+      </form>
+  </div>
+  </div>
+  </div>
+  </div>
+
+  <script type="text/javascript">
+  $('.btnNext').click(function(){
+  $('.nav-tabs > .active').next('li').find('a').trigger('click');
+  });
+
+  $('.btnPrevious').click(function(){
+  $('.nav-tabs > .active').prev('li').find('a').trigger('click');
+  });
+      </script>
+  {% endblock %}

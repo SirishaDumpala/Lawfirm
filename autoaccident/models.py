@@ -372,3 +372,24 @@ class OtherPartyClaim(models.Model):
         Returns the url to access a particular client instance.
         """
         return reverse('claim-detail', args=[str(self.id)])
+
+class CourtCase(models.Model):
+    client = models.ForeignKey('Client', null=True)
+
+    case_number = models.CharField(max_length=20, null=True)
+    trial_Date = models.DateTimeField(
+            blank=True, null=True)
+    osc_date = models.DateTimeField(
+            blank=True, null=True)
+    cmc_date = models.DateTimeField(
+            blank=True, null=True)
+    depo_date = models.DateTimeField(
+            blank=True, null=True)
+    mediation_date = models.DateTimeField(
+            blank=True, null=True)
+    arbitration_date = models.DateTimeField(
+            blank=True, null=True)
+    final_status_conference = models.DateTimeField(
+            blank=True, null=True)
+    trial_setting_conf_date = models.DateTimeField(
+            blank=True, null=True)

@@ -6,7 +6,7 @@ from django.utils.safestring import mark_safe
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 import datetime #for checking Statute of limitation date range.
-from .models import Client, ClientAddress, ClientVehicle, OtherPartyInformation, AccidentDetails, Appointment, CallLog, DoctorInfo, ClaimInfo, InsuranceInformation
+from .models import Client, ClientAddress, ClientVehicle, OtherPartyInformation, AccidentDetails, Appointment, CallLog, DoctorInfo, ClaimInfo, InsuranceInformation, CourtCase, OtherPartyClaim
 
 class HorizontalRadioRenderer(forms.RadioSelect.renderer):
   def render(self):
@@ -85,7 +85,7 @@ class CallLogForm(forms.ModelForm):
     class Meta:
         model = CallLog
 
-        widgets = {'call_date': DateWidget(attrs={'id':"yourdatetimeid"}, usel10n = True, bootstrap_version=3),
+        widgets = {'call_date': DateWidget(attrs={'id':"yourdateid"}, usel10n = True, bootstrap_version=3),
                     'date_of_accident':DateWidget(attrs={'id':"yourdateid"}, usel10n = True, bootstrap_version=3),}
         fields = ('client', 'date_of_accident', 'caller_name', 'caller_number', 'call_date','call_notes')
 
@@ -102,6 +102,14 @@ class ClaimInfoForm(forms.ModelForm):
 
         fields = ('client', 'claim_number', 'adjuster_name', 'adjuster_phonenumber', 'adjuster_faxnumber', 'adjuster_address_1', 'adjuster_address_2', 'adjuster_city', 'adjuster_state', 'adjuster_zip_code')
 
+class OtherPartyClaimForm(forms.ModelForm):
+    #Other party claim info
+    class Meta:
+        model = OtherPartyClaim
+
+        fields = ('client', 'claim_number', 'adjuster_name', 'adjuster_phonenumber', 'adjuster_faxnumber', 'adjuster_address_1', 'adjuster_address_2', 'adjuster_city', 'adjuster_state', 'adjuster_zip_code')
+
+
 class InsuranceInfoForm(forms.ModelForm):
     class Meta:
         model = InsuranceInformation
@@ -113,3 +121,20 @@ class OtherPartyInsuranceForm(forms.ModelForm):
     class Meta:
         model = InsuranceInformation
         fields = ('other_insurnace_company', 'other_Policy_holder_name', 'other_policy_number', 'other_type_of_coverage', 'other_policy_limit_pd', 'other_policy_limit')
+
+class CourtCaseForm(forms.ModelForm):
+
+    #appointment_date = forms.DateTimeField(widget = DateTimeWidget(usel10n = True, bootstrap_version = 3))
+    class Meta:
+        model = CourtCase
+
+        widgets = {'trial_Date': DateWidget(attrs={'id':"yourdateid"}, usel10n = True, bootstrap_version=3),
+                    'osc_date': DateWidget(attrs={'id':"yourdateid"}, usel10n = True, bootstrap_version=3),
+                    'cmc_date': DateWidget(attrs={'id':"yourdateid"}, usel10n = True, bootstrap_version=3),
+                    'depo_date': DateWidget(attrs={'id':"yourdateid"}, usel10n = True, bootstrap_version=3),
+                    'mediation_date': DateWidget(attrs={'id':"yourdateid"}, usel10n = True, bootstrap_version=3),
+                    'arbitration_date': DateWidget(attrs={'id':"yourdateid"}, usel10n = True, bootstrap_version=3),
+                    'final_status_conference': DateWidget(attrs={'id':"yourdateid"}, usel10n = True, bootstrap_version=3),
+                    'trial_setting_conf_date': DateWidget(attrs={'id':"yourdateid"}, usel10n = True, bootstrap_version=3),}
+
+        fields = ('client', 'case_number', 'trial_Date', 'osc_date', 'cmc_date', 'depo_date', 'mediation_date', 'arbitration_date', 'final_status_conference', 'trial_setting_conf_date')

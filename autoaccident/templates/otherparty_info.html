@@ -19,9 +19,10 @@
       <ul class="nav nav-tabs">
 
         <li role="presentation" class="active"><a href="#tabs-1" aria-controls="tabs-1" role="tab" data-toggle="tab">Other Party Profile</a></li>
-        <li role="presentation"><a href="#tabs-2" aria-controls="tabs-2" role="tab" data-toggle="tab">Other Party Address</a></li>
-        <li role="presentation"><a href="#tabs-3" aria-controls="tabs-3" role="tab" data-toggle="tab">Other Party Vehicle</a></li>
-        <li role="presentation"><a href="#tabs-4" aria-controls="tabs-4" role="tab" data-toggle="tab">Other Party Insurance</a></li>
+        <li role="presentation"><a href="#tabs-2" aria-controls="tabs-2" role="tab" data-toggle="tab">Address</a></li>
+        <li role="presentation"><a href="#tabs-3" aria-controls="tabs-3" role="tab" data-toggle="tab">Vehicle</a></li>
+        <li role="presentation"><a href="#tabs-4" aria-controls="tabs-4" role="tab" data-toggle="tab">Insurance</a></li>
+        <li role="presentation"><a href="#tabs-5" aria-controls="tabs-5" role="tab" data-toggle="tab">Claim Details</a></li>
       </ul>
       <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="tabs-1">
@@ -259,9 +260,102 @@
       </tr>
     </table>
     <a class="btn btn-primary btnPrevious" >Previous</a>
-    <button type="submit" class="save btn btn-primary">Save</button>
+    <a class="btn btn-primary btnNext" >Next</a>
 
   </form>
+</div>
+<div role="tabpanel" class="tab-pane" id="tabs-5">
+
+      <table>
+      {% csrf_token %}
+      {{ formE.non_field_errors }}
+
+        <tr>
+          <td style="padding-bottom:10px;">
+              <div class="fieldWrapper">
+                  {{ formE.claim_number.errors }}
+                  <p><label class="col-sm-3" for="{{ formE.claim_number.id_for_label }}">Claim Number</label></p>
+                  <div class="col-sm-9">{{ formE.claim_number|add_class:"form-control" }}</div>
+              </div>
+          </td>
+      </tr>
+      <tr>
+        <td style="padding-bottom:10px;">
+            <div class="fieldWrapper">
+                {{ formE.adjuster_name.errors }}
+                <p><label class="col-sm-3" for="{{ formE.adjuster_name.id_for_label }}">Adjuster Name</label></p>
+                <div class="col-sm-9">{{ formE.adjuster_name|add_class:"form-control" }}</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+      <td style="padding-bottom:10px;">
+          <div class="fieldWrapper">
+              {{ formE.adjuster_phonenumber.errors }}
+              <p><label class="col-sm-3" for="{{ formE.adjuster_phonenumber.id_for_label }}">Phone Number</label></p>
+              <div class="col-sm-9">{{ formE.adjuster_phonenumber|add_class:"form-control" }}</div>
+          </div>
+      </td>
+  </tr>
+  <tr>
+    <td style="padding-bottom:10px;">
+        <div class="fieldWrapper">
+            {{ formE.adjuster_faxnumber.errors }}
+            <p><label class="col-sm-3" for="{{ formE.adjuster_faxnumber.id_for_label }}">Fax Number</label></p>
+            <div class="col-sm-9">{{ formE.adjuster_faxnumber|add_class:"form-control" }}</div>
+        </div>
+    </td>
+</tr>
+<tr>
+  <td style="padding-bottom:10px;">
+      <div class="fieldWrapper">
+          {{ formE.adjuster_address_1.errors }}
+          <p><label class="col-sm-3" for="{{ formE.adjuster_address_1.id_for_label }}">Address 1</label></p>
+          <div class="col-sm-9">{{ formE.adjuster_address_1|add_class:"form-control" }}</div>
+      </div>
+  </td>
+</tr>
+<tr>
+  <td style="padding-bottom:10px;">
+      <div class="fieldWrapper">
+          {{ formE.adjuster_address_2.errors }}
+          <p><label class="col-sm-3" for="{{ formE.adjuster_address_2.id_for_label }}">Address 2</label></p>
+          <div class="col-sm-9">{{ formE.adjuster_address_2|add_class:"form-control" }}</div>
+      </div>
+  </td>
+</tr>
+<tr>
+  <td style="padding-bottom:10px;">
+      <div class="fieldWrapper">
+          {{ formE.adjuster_city.errors }}
+          <p><label class="col-sm-3" for="{{ formE.adjuster_city.id_for_label }}">City</label></p>
+          <div class="col-sm-9">{{ formE.adjuster_city|add_class:"form-control" }}</div>
+      </div>
+  </td>
+</tr>
+<tr>
+  <td style="padding-bottom:10px;">
+      <div class="fieldWrapper">
+          {{ formE.adjuster_state.errors }}
+          <p><label class="col-sm-3" for="{{ formE.adjuster_state.id_for_label }}">State</label></p>
+          <div class="col-sm-9">{{ formE.adjuster_state|add_class:"form-control" }}</div>
+      </div>
+  </td>
+</tr>
+<tr>
+  <td style="padding-bottom:10px;">
+      <div class="fieldWrapper">
+          {{ formE.adjuster_zip_code.errors }}
+          <p><label class="col-sm-3" for="{{ formE.adjuster_zip_code.id_for_label }}">Zip Code</label></p>
+          <div class="col-sm-9">{{ formE.adjuster_zip_code|add_class:"form-control" }}</div>
+      </div>
+  </td>
+</tr>
+
+</table>
+  <a class="btn btn-primary btnPrevious" >Previous</a>
+  <button type="submit" class="save btn btn-primary">Save</button>
+</form>
 </div>
 </div>
 </div>

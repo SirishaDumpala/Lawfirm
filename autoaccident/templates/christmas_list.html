@@ -4,8 +4,9 @@
 {% if user.is_authenticated %}
 
     <h1>Christmas List</h1>
-
+    <h4>Total number of cases: {{ client_count }}</h4>
     <div class="container">
+      <p><button onclick="sortTable()">Sort</button></p>
             <table id="client_list" class="table table-hover">
                 <thead>
                     <tr>
@@ -21,9 +22,9 @@
                         {% for client in christmas_list %}
 
                         <tr>
-                          <td>{{ client.first_name }} {{ client.last_name }}</td>
-                          <td>{{client.address.address_1}} {{address.address_2}} , {{address.city}}, {{address.state}}, {{address.zip_code}}</td>
-                          <td>{{ client.phone_number }}</td>
+                          <td>{{ client.0.first_name }} {{ client.0.last_name }}</td>
+                          <td>{{client.1.address_1}} {{client.1.address_2}} , {{client.1.city}}, {{client.1.state}}, {{client.1.zip_code}}</td>
+                          <td>{{ client.0.phone_number }}</td>
                         </tr>
                         {% endfor %}
 
@@ -38,5 +39,41 @@
 {% else %}
     <p2>Please <a href="{% url 'login'%}?next={{request.path}}">Login</a> to access the requested information.</p2>
 {% endif %}
+<script>
+function sortTable() {
+  var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("client_list");
+  switching = true;
+  /*Make a loop that will continue until
+  no switching has been done:*/
+  while (switching) {
+    //start by saying: no switching is done:
+    switching = false;
+    rows = table.getElementsByTagName("TR");
+    /*Loop through all table rows (except the
+    first, which contains table headers):*/
+    for (i = 1; i < (rows.length - 1); i++) {
+      //start by saying there should be no switching:
+      shouldSwitch = false;
+      /*Get the two elements you want to compare,
+      one from current row and one from the next:*/
+      x = rows[i].getElementsByTagName("TD")[0];
+      y = rows[i + 1].getElementsByTagName("TD")[0];
+      //check if the two rows should switch place:
+      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+        //if so, mark as a switch and break the loop:
+        shouldSwitch= true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      /*If a switch has been marked, make the switch
+      and mark that a switch has been done:*/
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
+}
+</script>
 
 {% endblock %}

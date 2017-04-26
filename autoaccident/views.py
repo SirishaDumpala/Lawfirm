@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response
-from .models import Client, ClientAddress, ClientVehicle, ClientInstance, OtherPartyInformation, AccidentDetails, InsuranceInformation, Appointment, DoctorInfo, CallLog, InsuranceInformation, ClaimInfo
+from .models import Client, ClientAddress, ClientVehicle, ClientInstance, OtherPartyInformation, AccidentDetails, InsuranceInformation, Appointment, DoctorInfo, CallLog, InsuranceInformation, ClaimInfo, OtherPartyClaim
 from django.views import generic
 from django.contrib.auth.models import User, Group, Permission
 #from django.contrib.auth.decorators import permission_required
@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 import datetime
 from django.contrib.auth.decorators import login_required
-from .forms import NewClientForm, ClientAddressForm, ClientVehicleForm, OtherPartyInfoForm, OtherPartyAddressForm, OtherPartyVehicleForm, AccidentDetailsForm, AppointmentForm, CallLogForm, DoctorInfoForm, ClaimInfoForm, InsuranceInfoForm, OtherPartyInsuranceForm
+from .forms import NewClientForm, ClientAddressForm, ClientVehicleForm, OtherPartyInfoForm, OtherPartyAddressForm, OtherPartyVehicleForm, AccidentDetailsForm, AppointmentForm, CallLogForm, DoctorInfoForm, ClaimInfoForm, InsuranceInfoForm, OtherPartyInsuranceForm, CourtCaseForm, OtherPartyClaimForm
 from django.db.models import Count, Avg
 from django.db.models.functions import TruncMonth, ExtractMonth
 
@@ -167,13 +167,29 @@ def ClientListView(request):
 
 @login_required
 def ChristmasListView(request):
-    """
-    View function for All clients page on the sidebar of site.
-    """
     christmas_list = Client.objects.all()
     client_address = ClientAddress.objects.all()
-    print (client_address)
-    return render(request, 'christmas_list.html', {'christmas_list': christmas_list, 'address': client_address})
+    client_count = Client.objects.all().count()
+    ##Refactor start
+    the_list = []
+    client_list = Client.objects.all()
+
+    address = ClientAddress.objects.get(client_id=4)
+    print("Type of address: ",address.city)
+
+
+    for client in client_list:
+        address = ClientAddress.objects.get(client_id=client.id)
+        the_list.append([client,address])
+        print(client.id)
+
+    print ("the_list type is: ", type(the_list))
+    for i in the_list:
+        print(type(i[1]))
+        print(i[0].first_name, " ", i[1].city)
+
+    ##Refactor end
+    return render(request, 'christmas_list.html', {'christmas_list': the_list, 'client_count':client_count})
 
 @login_required
 def OtherParty(request):
@@ -185,8 +201,9 @@ def OtherParty(request):
         formB = OtherPartyAddressForm(request.POST)
         formC = OtherPartyVehicleForm(request.POST)
         formD = OtherPartyInsuranceForm(request.POST)
+        formE = OtherPartyClaimForm(request.POST)
 
-        if formA.is_valid() and formB.is_valid() and formC.is_valid() and formD.is_valid():
+        if formA.is_valid() and formB.is_valid() and formC.is_valid() and formD.is_valid() and formE.is_valid():
             otherparty_inst = formA.save(commit=False)
             otherparty_inst.save()
             otherparty_address = formB.save(commit=False)
@@ -195,8 +212,10 @@ def OtherParty(request):
             otherparty_vehicle.save()
             otherparty_insurance = formD.save(commit=False)
             otherparty_insurance.save()
+            otherparty_calim = formE.save(commit=False)
+            otherparty_claim.save()
 
-            return otherparty_inst(request)
+            return ClientListView(request)
         else:
             print(formA.errors)
 
@@ -206,7 +225,8 @@ def OtherParty(request):
         formB = OtherPartyAddressForm()
         formC = OtherPartyVehicleForm()
         formD = OtherPartyInsuranceForm()
-    return render(request, 'otherparty_info.html', {'formA': formA, 'formB': formB, 'formC': formC, 'formD': formD})
+        formE = OtherPartyClaimForm()
+    return render(request, 'otherparty_info.html', {'formA': formA, 'formB': formB, 'formC': formC, 'formD': formD, 'formE': formE})
 
 @login_required
 def AccidentDetailsView(request):
@@ -347,7 +367,7 @@ def EditClient(request, pk):
             print("saved new client")
 
             # The user will be shown the patient profile page view.
-            return client_detail(request)
+            return ClientDetailView(request)
         else:
             # The supplied form contained errors - just print them to the terminal.
             print(formA.errors)
@@ -425,3 +445,16 @@ def InsuranceInfoView(request):
         form = InsuranceInfoForm()
 
     return render(request, 'insurance_info.html', {'form': form})
+
+def CourtCaseView(request):
+    if request.method =='POST':
+        form = CourtCaseForm(request.POST)
+        if form.is_valid():
+            court_details = form.save(commit=False)
+            court_details.save()
+        else:
+            print(form.errors)
+    else:
+        form = CourtCaseForm()
+
+    return render(request, 'court_details.html', {'form': form})
