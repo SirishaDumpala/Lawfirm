@@ -12,12 +12,12 @@
             <table id="call_list" class="table table-hover">
                 <thead>
                     <tr>
-                        <th>Client</th>
-                        <th>Date of Accident</th>
                         <th>Caller Name</th>
                         <th>Phone Number</th>
                         <th>Notes</th>
                         <th>Date</th>
+                        <th>Client</th>
+                        <th>Date of Accident</th>
 
                     </tr>
                 </thead>
@@ -26,12 +26,13 @@
                   <ul>
                   {% for n in call_list %}
                     <tr>
-                        <td><a href="/client_detail/">{{n.client.first_name}} {{n.client.last_name}}</td>
-                        <td>{{n.date_of_accident}}</td>
                         <td>{{n.caller_name}}</td>
                         <td>{{n.caller_number}}</td>
                         <td>{{n.call_notes}}</td>
-                        <td>{{n.call_date}}</td>
+                        <td>{{n.call_date|date:"M d, Y"}}</td>
+                        <td>{{n.client.first_name}} {{n.client.last_name}}</td>
+                        <td>{{n.date_of_accident|date:"M d, Y"}}</td>
+
                     </tr>
                     {% endfor %}
                   </ul>

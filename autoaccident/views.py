@@ -6,6 +6,7 @@ from django.contrib.auth.models import User, Group, Permission
 
 #from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
+#from django.core.exceptions import DoesNotExist
 from django.core.urlresolvers import reverse
 import datetime
 from django.contrib.auth.decorators import login_required
@@ -167,6 +168,7 @@ def ClientListView(request):
 
 @login_required
 def ChristmasListView(request):
+
     christmas_list = Client.objects.all()
     client_address = ClientAddress.objects.all()
     client_count = Client.objects.all().count()
@@ -175,18 +177,14 @@ def ChristmasListView(request):
     client_list = Client.objects.all()
 
     address = ClientAddress.objects.get(client_id=4)
-    print("Type of address: ",address.city)
 
 
     for client in client_list:
-        address = ClientAddress.objects.get(client_id=client.id)
-        the_list.append([client,address])
-        print(client.id)
-
-    print ("the_list type is: ", type(the_list))
-    for i in the_list:
-        print(type(i[1]))
-        print(i[0].first_name, " ", i[1].city)
+        try:
+            address = ClientAddress.objects.get(client_id=client.id)
+            the_list.append([client,address])
+        except Exception:
+            print("Client Id ", client.id, " is missing address")
 
     ##Refactor end
     return render(request, 'christmas_list.html', {'christmas_list': the_list, 'client_count':client_count})
@@ -270,9 +268,9 @@ def AppointmentList(request):
     """
     View function for All appointments.
     """
-    appointment_list = Appointment.objects.all()
+    appointment_list = Appointment.objects.all().order_by('appointment_date')
     print ("in appointment list")
-    print (appointment_list[1].appointment_date)
+    #print (appointment_list[1].appointment_date)
     return render(request, 'appointment_list.html', {'appointment_list': appointment_list})
 
 @login_required
@@ -295,7 +293,7 @@ def CallList(request):
     """
     View function for All appointments.
     """
-    call_list = CallLog.objects.all()
+    call_list = CallLog.objects.all().order_by('call_date')
     return render(request, 'call_list.html', {'call_list': call_list})
 
 
@@ -327,21 +325,25 @@ def ClaimInfoView(request):
     return render(request, 'new_client_signup.html', {'form': form})
 
 def ClientDetail(request, pk):
-    print("In ClientDetail. PK is: ", str(pk))
-    client_profile = Client.objects.get(id=pk)
+    try:
+        print("In ClientDetail. PK is: ", str(pk))
+        client_profile = Client.objects.get(id=pk)
 
 
-    client_address= ClientAddress.objects.get(client_id=pk)
-    print ("Client Address: ", client_address.city)
-    client_vehicle = ClientVehicle.objects.get(client_id=pk)
-    treatment_info = DoctorInfo.objects.get(client_id=pk)
-    print ("Client treatment: ", treatment_info.hospital_name)
-    accident_details = AccidentDetails.objects.get(client_id=pk)
-    #Insurance_info = InsuranceInformation.objects.get(client_id=pk)
-    #otherparty_info = OtherPartyInformation.objects.filter(client_id=pk)
-    context_dict = {'profile': client_profile, 'address': client_address, 'vehicle': client_vehicle, 'treatment': treatment_info, 'accident_details':accident_details}
-    print("in client profile")
-    return render(request, 'client_detail.html', context_dict)
+        client_address= ClientAddress.objects.get(client_id=pk)
+        print ("Client Address: ", client_address.city)
+        client_vehicle = ClientVehicle.objects.get(client_id=pk)
+        treatment_info = DoctorInfo.objects.get(client_id=pk)
+        print ("Client treatment: ", treatment_info.hospital_name)
+        accident_details = AccidentDetails.objects.get(client_id=pk)
+        #Insurance_info = InsuranceInformation.objects.get(client_id=pk)
+        #otherparty_info = OtherPartyInformation.objects.filter(client_id=pk)
+        context_dict = {'profile': client_profile, 'address': client_address, 'vehicle': client_vehicle, 'treatment': treatment_info, 'accident_details':accident_details}
+        print("in client profile")
+        return render(request, 'client_detail.html', context_dict)
+    except Exception:
+        print("I am in Exception")
+        return redirect( '/autoaccident/new_client_signup')
 
 def EditClient(request, pk):
     if request.method == 'POST':

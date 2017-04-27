@@ -34,7 +34,7 @@ class Client(models.Model):
     middle_name = models.CharField(max_length=50, null=True, blank=True)
     last_name = models.CharField(max_length=50, null=True)
     client_type = models.CharField(max_length=50, choices=CLIENT_CHOICES, null=True)
-    phone_number = models.CharField(max_length=14, null = True)
+    phone_number = models.CharField(max_length=10, null = True)
     date_of_birth = models.DateField(_("Date of Birth"), null = True)
     driver_license = models.CharField(max_length=8, null = True)
     gender = models.CharField(max_length=50, choices=GENDER_CHOICES, null = True)
@@ -132,7 +132,7 @@ class OtherPartyInformation(models.Model):
     #following is other party's personal information
     client = models.ForeignKey('Client', null=True)
     otherparty_driver_name = models.CharField(max_length=100, null=True, blank=True)
-    otherparty_phonenumber = models.CharField(max_length=14, null = True)
+    otherparty_phonenumber = models.CharField(max_length=10, null = True)
     otherparty_date_of_birth = models.DateField(_("Date of Birth"), null = True)
     otherparty_gender = models.CharField(max_length=50, choices=GENDER_CHOICES, null = True)
     otherparty_driver_license = models.CharField(max_length=8, null = True)
@@ -251,23 +251,23 @@ class InsuranceInformation(models.Model):
 
 class Appointment(models.Model):
 
-    APPOINTMENT_CHOICES = (('new_case', 'New Case',),
-                            ('existing_case', 'Existing Case',),
-                            ('property_damage_discussion', 'Property Damage Discussion'),
-                            ('medical_report', 'Medical Report'),
-                            ('signing_docs', 'Documents Signing'),
-                            ('docs_submit', 'Documents Subminssion'),
-                            ('settlement_discussion', 'Discussing the Settlement Offer'),
-                            ('sign_final_docs', 'To sign the settlement Documents'),
-                            ('check_collection', 'Check Collection'),
-                            ('status_inquiry', 'For Case Status'),
-                            ('other', 'Other'),)
+    APPOINTMENT_CHOICES = (('New Case', 'New Case',),
+                            ('Existing Case', 'Existing Case',),
+                            ('Property Damage Discussion', 'Property Damage Discussion'),
+                            ('Medical Report', 'Medical Report'),
+                            ('Documents Signing', 'Documents Signing'),
+                            ('Documents Subminssion', 'Documents Subminssion'),
+                            ('Discussing the Settlement Offer', 'Discussing the Settlement Offer'),
+                            ('To sign the settlement Documents', 'To sign the settlement Documents'),
+                            ('Check Collection', 'Check Collection'),
+                            ('For Case Status', 'For Case Status'),
+                            ('Other', 'Other'),)
 
     existing_client = models.BooleanField(default=False, help_text='Existing client?' )
     caller_first_name = models.CharField(max_length=50, null=True)
     caller_last_name = models.CharField(max_length=50, null=True)
     type_of_appointment = models.CharField(max_length=100, choices=APPOINTMENT_CHOICES, null = True)
-    further_appointment_notes = models.TextField(max_length=200, null = True)
+    further_appointment_notes = models.TextField(max_length=50, null = True)
     phone_number = models.CharField(max_length=10, null = True)
     appointment_date = models.DateTimeField(
             blank=True, null=True)
@@ -290,7 +290,7 @@ class CallLog(models.Model):
     date_of_accident = models.DateTimeField(blank=True, null=True)
     caller_name = models.CharField(max_length=100, null=True)
     caller_number = models.CharField(max_length=10, null = True)
-    call_date = models.DateTimeField(
+    call_date = models.DateTimeField(default=datetime.now,
             blank=True, null=True)
     call_notes = models.TextField(max_length=100, null=True)
 

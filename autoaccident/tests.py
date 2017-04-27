@@ -2,7 +2,9 @@ from django.test import TestCase
 
 # Create your tests here.
 
-from .models import Client, ClientAddress, ClientVehicle, AccidentDetails, OtherPartyInformation
+from .models import Client, ClientAddress, ClientVehicle, AccidentDetails, OtherPartyInformation, Appointment
+import datetime
+from django.shortcuts import render, redirect, render_to_response
 
 class ClientModelTest(TestCase):
 
@@ -53,11 +55,27 @@ class ClientModelTest(TestCase):
     def test_accidentdetails(self):
         accident = AccidentDetails.objects.get(client_id=1)
         self.assertEquals(accident.weather_condition,'normal')
+        self.assertEquals(accident.paramedics, True)
 
     def test_otherparty(self):
         otherparty = OtherPartyInformation.objects.get(client_id=1)
         self.assertEquals(otherparty.otherparty_phonenumber,'7147681998')
         self.assertEquals(otherparty.otherparty_driver_license,'D1234567')
-        self.assertEquals(otherparty.otherparty_date_of_birth,'01/01/1980')
+        self.assertEquals(otherparty.otherparty_date_of_birth,datetime.date(1980, 1, 1))
+'''
+    def test_load_client_list(request):
+            client_list = {'client': Client.objects.all()}
+            return render(request, '/client_list.html', client_list)
+'''
+class AppointmentModelTest(TestCase):
 
-    
+    @classmethod
+    def setUp(self):
+        Appointment.objects.create(caller_first_name='Tom', caller_last_name='Cruise')
+
+    def test_name(self):
+        appointment=Appointment.objects.get(id=1)
+        #This will also fail if the urlconf is not defined.
+
+        self.assertEquals(appointment.caller_first_name,'Tom')
+        self.assertEquals(appointment.caller_last_name,'Cruise')

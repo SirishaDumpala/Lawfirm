@@ -11,17 +11,17 @@
 
             <div class="table-responsive">
             <table id="appointment_list" class="table table-hover">
-              
+
                 <thead>
                     <tr>
-                        <th>Caller Name</th>
+                        <th>Name</th>
 
-                        <th>Reason for Appointment</th>
+                        <th>Reason</th>
                         <th>Notes</th>
                         <th>Phone No.</th>
                         <th>Date</th>
                         <th>Time</th>
-                        <th>Cancel / Edit</th>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -29,13 +29,13 @@
                   <ul>
                   {% for n in appointment_list %}
                     <tr>
-                        <td><a href="/client_detail/">{{n.caller_first_name}} {{n.caller_last_name}}</a></td>
+                        <td>{{n.caller_first_name}} {{n.caller_last_name}}</td>
                         <td>{{n.type_of_appointment}}</td>
                         <td>{{n.further_appointment_notes}}</td>
                         <td>{{n.phone_number}}</td>
-                        <td>{{n.appointment_date}}</td>
+                        <td>{{n.appointment_date|date:"M d, Y"}}</td>
                         <td>{{n.appointment_time}}</td>
-                        <td><button type="button" class="btn btn-primary">Cancel</button> <a class="btn btn-default" href="/appointment/"><span class="glyphicon glyphicon-pencil"></span></a></td>
+
                     </tr>
                     {% endfor %}
                   </ul>
